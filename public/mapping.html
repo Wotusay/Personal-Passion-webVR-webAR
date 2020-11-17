@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebVR - Wout Salembier</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+</head>
+
+<body>
+    <a-scene inspector-plugin-recast>
+        <a-assets>
+
+            <!-- The ground textures -->
+
+
+            </a-asset>
+        </a-assets>
+
+        <a-entity id="rig" movement-controls="speed: 0.15" position="0 0 0">
+            <a-entity id="leftHand" hand-controls="hand: left; handModelStyle: highPoly; color: #34A2BD"></a-entity>
+            <a-entity id="rightHand" hand-controls="hand: right; handModelStyle: highPoly; color: #34A2BD"></a-entity>
+
+            <a-entity camera position="0 1.6 0" look-controls>
+            </a-entity>
+
+        </a-entity>
+        </a-sky>
+        <a-box></a-box>
+        <a-box></a-box>
+        <a-box></a-box>
+
+        <a-plane scale="7 7 1" color="blue" rotation="-90 0 0" roughness="0.1" position="0 -0.1 0"></a-plane>
+        <!--
+         The plane  
+        <a-plane src="#ground" 
+        repeat="5 5"
+        normal-map="#ground-NMR"
+        normal-texture-repeat="5 5"
+        normal-scale="5 5"
+        roughness="0.55"
+        rotation="-90 0 0"
+        ambient-occlusion-map="#ground-AO"
+        ambient-occlusion-texture-repeat="5 5"
+        scale="10 10 1"
+        color="#FFFFFF"></a-plane>
+
+         The Skybox  
+        <a-sky src="#sky" radius="9.5" side="double" rotation="0 64 0">
+        </a-sky>
+
+         The walls  
+
+        <a-box color="#FFFFFF" 
+        src="#wall"
+        repeat="2.5 2.5"
+        normal-map="#wall-NMR"
+        normal-texture-repeat="2.5 2.5"
+        normal-scale="2.5 2.5"
+        roughness="0.5ww"
+        ambient-occlusion-map="#wall-AO"
+        ambient-occlusion-texture-repeat="2.5 2.5"
+
+        position="0 1.99559 -5.08478" scale="9.98191 6 0.1558">
+        </a-box>
+
+        <a-box color="#FFFFFF" 
+        src="#wall"
+        repeat="2.5 2.5"
+        normal-map="#wall-NMR"
+        normal-texture-repeat="2.5 2.5"
+        normal-scale="2.5 2.5"
+        roughness="0.5ww"
+        ambient-occlusion-map="#wall-AO"
+        ambient-occlusion-texture-repeat="2.5 2.5"
+
+        position="-5.04043 1.99559 -0.05606" scale="10.21121 6 0.1558" rotation="0 90 0">
+        </a-box>
+
+        <a-box color="#FFFFFF" 
+        src="#wall"
+        repeat="2.5 2.5"
+        normal-map="#wall-NMR"
+        normal-texture-repeat="2.5 2.5"
+        normal-scale="2.5 2.5"
+        roughness="0.5ww"
+        ambient-occlusion-map="#wall-AO"
+        ambient-occlusion-texture-repeat="2.5 2.5"
+
+        position="5.04043 1.99559 -0.05606" scale="10.21121 6 0.1558" rotation="0 90 0">
+        </a-box>
+
+         The ceiling 
+        <a-plane material="color: #a1a1a1; side: double" rotation="-90 0 0" geometry="" scale="10 10.2 1"
+        position="0.02263 5.002 0.00956"> </a-plane>
+    -->
+
+    </a-scene>
+</body>
+
+</html>
