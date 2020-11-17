@@ -1,7 +1,5 @@
+
 ## Welcome to GitHub Pages
----
-layout: default
----
 
 <div class="posts">
   {% for post in site.posts %}
