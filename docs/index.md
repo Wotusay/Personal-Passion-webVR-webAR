@@ -1,5 +1,5 @@
 
-## Welcome to GitHub Pages
+## My Blog Posts
 
 <div class="posts">
   {% for post in site.posts %}
