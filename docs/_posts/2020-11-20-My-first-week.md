@@ -14,11 +14,20 @@ To get all the info i needed to begin on my project took me around 8 hours to un
 
 For my first demo i wanted to be sure that i can run it in VR. So i ran an Node Server to run it in my wireless headset. The headset im using is the oculus quest 2. My node server was made of socket.io this is what i will later use to get multiple users in one room and it will update in real time. Wich will be fun!
 
+<p align="center">
+  <img src="../images/begin.png" alt="begin" width="400"/>
+</p>
+
 The movement works on all platforms seamlessly this was made posible by an libary where you can do alot more with a-frame. For now i used the controls checker to seamlessly switch between controls
 
 [A-frame extras](https://github.com/n5ro/aframe-extras)
 
 I used an asset from Sketchfab named "The Magic Room". To better visualize how i will make the room. I limited the users movement by creating an Navmesh with a plugin that was made for A-Frame. This didnt work on GLTF-models so i made an other file where i can sketch where the objects are that arent supposed to be climmed on. 
+
+
+<p align="center">
+  <img src="../images/second.png" alt="second" width="400"/>
+</p>
 
 [The github repo for the plugin](https://github.com/donmccurdy/aframe-inspector-plugin-recast)
 
@@ -35,6 +44,11 @@ I did some research on how to make use a-frame and socket.io. I found a project 
 
 ### My Room 
 After many tries and searches on the web. I decided to make the room from skratch with some models of sketch fab. To make one cool room where many people can hangout and chill. I tought to my self it hasnt to be an room it can be everything because its VR. You have the freedom to do whatever.
+
+
+<p align="center">
+  <img src="../images/last.png" alt="last" width="600"/>
+</p>
 
 
 ## Whats next?
