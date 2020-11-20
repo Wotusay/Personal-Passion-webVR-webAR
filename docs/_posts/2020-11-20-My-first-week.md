@@ -7,7 +7,9 @@ Things i did for my first week!
 In the begining i researched how A-Frame works and how to use it. The first thing i did was searching on youtube for tutorials on how to use it. Then i stumbeld on a course wich was available for free for the first 3 chapters. The rest u could find on Udemy for 10 euro. 
 
 To get all the info i needed to begin on my project took me around 8 hours to understand it. Wich was quit fast!
+
 [The free course on youtube](https://www.youtube.com/watch?v=ktjMCanKNLk&list=PL8MkBHej75fJD-HveDzm4xKrciC5VfYuV&ab_channel=DaniloPasquariello)
+
 [The full course on Udemy](https://www.udemy.com/course/learn-a-frame-and-get-ready-for-webvr/)
 
 ### My first Demo
