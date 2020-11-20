@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebVR - Wout Salembier</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+</head>
+
+<body>
+    <a-scene inspector-plugin-recast>
+        <a-assets>
+                <img id="sky" src="./textures/sky/ded.jpg" >
+                <img id="trees" src="textures/threes/TexturesCom_Trees0017_masked_S.png">  
+        </a-assets>
+
+        <a-entity id="rig" movement-controls="speed: 0.15" position="0 0 0">
+            <a-box scale="0.73677 0.87531 0.64111" position="0 1.6 0" material="color: #b2ae95" geometry=""></a-box>
+            <a-entity id="leftHand" hand-controls="hand: left; handModelStyle: highPoly; color: #34A2BD"></a-entity>
+            <a-entity id="rightHand" hand-controls="hand: right; handModelStyle: highPoly; color: #34A2BD"></a-entity>
+            <a-entity camera position="0 1.6 0" look-controls></a-entity>
+        </a-entity>
+        
+        <a-circle material="color: #161a88; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0" geometry="radius: 20; thetaLength: 460" position=""></a-circle>        
+        <a-cylinder color="cyan" material="color: #6e19d7; side: double; shader: flat" open-ended="true" rotation="" geometry="height: 0.42; radius: 20; segmentsHeight: 17; segmentsRadial: 360; thetaLength: 460" position=""></a-cylinder>  
+        <a-image position="0 1.74081 -18.3363" scale="4 4 4" look-at="#rig" src="#trees" material="color: #6e19d7" geometry=""></a-image>       
+         <a-plane scale="99.84777 98.00598 1" rotation="-90 0 0" roughness="0.1" position="0 -0.1 0" material="color: #030311; shader: flat" geometry=""></a-plane>        
+        <a-sky radius="45" src="#sky" material="" geometry="" rotation="0 29.999999999999996 0"></a-sky>
+    </a-scene>
+</body>
+
+</html>

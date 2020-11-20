@@ -13,11 +13,8 @@
 <body>
     <a-scene inspector-plugin-recast>
         <a-assets>
-    
             <a-asset id="room" src="textures/the_magic_room/scene.gltf">
-            <a-asset id="nav-mesh" src="textures/navmesh/navmesh.gltf">
-
-            </a-asset>
+                <a-asset id="nav-mesh" src="textures/navmesh/navmesh.gltf"></a-asset>
         </a-assets>
 
         <a-entity id="rig" movement-controls="speed: 0.15; constrainToNavMesh: true" position="0 0 0">
@@ -31,9 +28,10 @@
         <a-sky color="#030303">
         </a-sky>
         <a-entity scale="0.025 0.025 0.025" gltf-model="#room"></a-entity>
-        <a-entity visible="false" scale="0.831 1 1" position="0.094 0 0.708" gltf-model="#nav-mesh" nav-mesh ></a-entity>
+        <a-entity visible="false" scale="0.831 1 1" position="0.094 0 0.708" gltf-model="#nav-mesh" nav-mesh></a-entity>
 
-        <a-plane  material="shader: flat" scale="1000 1000 1" color="#030303" rotation="-90 0 0" roughness="0.1" position="0 -10 0"></a-plane>
+        <a-plane material="shader: flat" scale="1000 1000 1" color="#030303" rotation="-90 0 0" roughness="0.1"
+            position="0 -10 0"></a-plane>
 
     </a-scene>
 </body>
