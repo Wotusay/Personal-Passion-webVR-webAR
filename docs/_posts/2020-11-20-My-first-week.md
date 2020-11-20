@@ -15,7 +15,7 @@ To get all the info i needed to begin on my project took me around 8 hours to un
 For my first demo i wanted to be sure that i can run it in VR. So i ran an Node Server to run it in my wireless headset. The headset im using is the oculus quest 2. My node server was made of socket.io this is what i will later use to get multiple users in one room and it will update in real time. Wich will be fun!
 
 <p align="center">
-  <img src="../images/begin.png" alt="begin" width="400"/>
+  <img src="https://github.com/Wotusay/Personal-Passion-webVR-webAR/blob/pages/docs/images/begin.png?raw=true" alt="begin" width="400"/>
 </p>
 
 The movement works on all platforms seamlessly this was made posible by an libary where you can do alot more with a-frame. For now i used the controls checker to seamlessly switch between controls
@@ -26,7 +26,7 @@ I used an asset from Sketchfab named "The Magic Room". To better visualize how i
 
 
 <p align="center">
-  <img src="../images/second.png" alt="second" width="400"/>
+  <img src="https://github.com/Wotusay/Personal-Passion-webVR-webAR/blob/pages/docs/images/second.png?raw=true" alt="second" width="400"/>
 </p>
 
 [The github repo for the plugin](https://github.com/donmccurdy/aframe-inspector-plugin-recast)
@@ -47,7 +47,7 @@ After many tries and searches on the web. I decided to make the room from skratc
 
 
 <p align="center">
-  <img src="../images/last.png" alt="last" width="600"/>
+  <img src="https://github.com/Wotusay/Personal-Passion-webVR-webAR/blob/pages/docs/images/last.png?raw=true" alt="last" width="600"/>
 </p>
 
 
