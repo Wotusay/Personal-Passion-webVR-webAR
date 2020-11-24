@@ -7,35 +7,37 @@
     <title>WebVR - Wout Salembier</title>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="js/progressive-controls.js"></script>
     <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
-    <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.min.js"></script> 
 </head>
 
 <body>
-    <a-scene physics="gravity: -9.8; restitution:0.7" inspector-plugin-recast>
+    <a-scene inspector-plugin-recast>
         <a-assets>
-            <img id="sky" src="./textures/sky/kk.jpg">
+            <img id="sky" src="./textures/sky/ded.jpg">
             <a-asset id="tree" src="textures/tree/scene.gltf">
             <a-asset id="lamp" src="textures/lamps/scene.gltf">
         </a-assets>
 
-        <a-entity id="rig" progressive-controls position="0 0 0">
-
+        <a-entity id="rig" movement-controls="speed: 0.15" position="0 0 0">
+            <a-box scale="0.73677 0.87531 0.64111" position="0 1.6 0" material="color: #b2ae95" geometry=""></a-box>
+            <a-entity camera position="0 1.6 0" look-controls></a-entity>
         </a-entity>
 
- 
+        <a-entity>
+            <a-entity scale="0.1 0.1 0.1" position="0 0 0" gltf-model="#lamp">
 
-        <a-box  grabbable stretchable draggable dropppable  scale="0.5 0.5 0.5" color="blue" position="0 1 0"></a-box>
+            </a-entity>
+        </a-entity>
 
-        <a-circle  material="color: #1e1820; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
+        <a-circle material="color: #1e1820; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
             geometry="radius: 5; thetaLength: 460; segments: 360;" position="0 0.01641 0"></a-circle>
         
-        <a-circle  material="color: #1e1820; side: double" rotation="90 0 0"
+        <a-circle material="color: #1e1820; side: double" rotation="90 0 0"
             geometry="radius: 0.5; thetaLength: 458.77; segments: 20" position="0.02815 0.01641 -18.3795"></a-circle>
-        <a-circle  material="color: #ec2727; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
+        <a-circle material="color: #ec2727; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
             geometry="radius: 20; thetaLength: 460; segments: 360;" position=""></a-circle>
-        <a-cylinder  color="cyan" material="color: #6e19d7; side: double; shader: flat" open-ended="true" rotation=""
+        <a-cylinder color="cyan" material="color: #6e19d7; side: double; shader: flat" open-ended="true" rotation=""
             geometry="height: 0.42; radius: 20; segmentsHeight: 17; segmentsRadial: 360; thetaLength: 460" position="">
         </a-cylinder>
 
@@ -113,8 +115,8 @@
             </a-entity>
         </a-entity>
         <a-plane scale="99.84777 98.00598 1" rotation="-90 0 0" roughness="0.1" position="0 -0.1 0"
-            material="color: #030311; shader: flat" geometry="" static-body></a-plane>
-        <a-sky radius="25" src="#sky" material="" geometry="" rotation="0 55.999999999999996 0"></a-sky>
+            material="color: #030311; shader: flat" geometry=""></a-plane>
+        <a-sky radius="25" src="#sky" material="" geometry="" rotation="0 29.999999999999996 0"></a-sky>
     </a-scene>
 </body>
 
