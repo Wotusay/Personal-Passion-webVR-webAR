@@ -20,8 +20,10 @@
             <a-asset id="lamp" src="textures/lamps/scene.gltf">
         </a-assets>
 
-        <a-entity id="rig" progressive-controls position="0 0 0">
-
+        <a-entity id="rig" movement-controls="speed: 0.15" position="0 0 0">
+            <a-entity id="leftHand"  super-hands sphere-collider="objects: a-box" hand-controls="hand: left; handModelStyle: highPoly; color: #34A2BD"></a-entity>
+            <a-entity id="rightHand" super-hands sphere-collider="objects: a-box" hand-controls="hand: right; handModelStyle: highPoly; color: #34A2BD"></a-entity>
+            <a-entity camera position="0 1.6 0" look-controls></a-entity>
         </a-entity>
 
  
