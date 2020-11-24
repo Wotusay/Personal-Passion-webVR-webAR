@@ -8,31 +8,115 @@
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.min.js"></script> 
 </head>
 
 <body>
-    <a-scene inspector-plugin-recast>
+    <a-scene physics="gravity: -9.8; restitution:0.7" inspector-plugin-recast>
         <a-assets>
-            <a-asset id="room" src="textures/the_magic_room/scene.gltf">
-                <a-asset id="nav-mesh" src="textures/navmesh/navmesh.gltf"></a-asset>
+            <img id="sky" src="./textures/sky/kk.jpg">
+            <a-asset id="tree" src="textures/tree/scene.gltf">
+            <a-asset id="lamp" src="textures/lamps/scene.gltf">
         </a-assets>
 
-        <a-entity id="rig" movement-controls="speed: 0.15; constrainToNavMesh: true" position="0 0 0">
-            <a-entity id="leftHand" hand-controls="hand: left; handModelStyle: highPoly; color: #34A2BD"></a-entity>
-            <a-entity id="rightHand" hand-controls="hand: right; handModelStyle: highPoly; color: #34A2BD"></a-entity>
+        <a-entity id="rig" movement-controls="speed: 0.15" position="0 0 0">
+            <a-entity id="leftHand"  super-hands sphere-collider="objects: a-box" hand-controls="hand: left; handModelStyle: highPoly; color: #34A2BD"></a-entity>
+            <a-entity id="rightHand" super-hands sphere-collider="objects: a-box" hand-controls="hand: right; handModelStyle: highPoly; color: #34A2BD"></a-entity>
+            <a-entity camera position="0 1.6 0" look-controls></a-entity>
+        </a-entity>
 
-            <a-entity camera position="0 1.6 0" look-controls>
+ 
+
+        <a-box  grabbable stretchable draggable dropppable  scale="0.5 0.5 0.5" color="blue" position="0 1 0"></a-box>
+
+        <a-circle  material="color: #1e1820; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
+            geometry="radius: 5; thetaLength: 460; segments: 360;" position="0 0.01641 0"></a-circle>
+        
+        <a-circle  material="color: #1e1820; side: double" rotation="90 0 0"
+            geometry="radius: 0.5; thetaLength: 458.77; segments: 20" position="0.02815 0.01641 -18.3795"></a-circle>
+        <a-circle  material="color: #ec2727; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
+            geometry="radius: 20; thetaLength: 460; segments: 360;" position=""></a-circle>
+        <a-cylinder  color="cyan" material="color: #6e19d7; side: double; shader: flat" open-ended="true" rotation=""
+            geometry="height: 0.42; radius: 20; segmentsHeight: 17; segmentsRadial: 360; thetaLength: 460" position="">
+        </a-cylinder>
+
+        <a-entity id="group-trees">
+            <a-entity id="trees" position="">
+
+                <a-entity id="1">
+                    <a-entity position="0 0 18.16492" scale="0.01 0.01 0.01" gltf-model="#tree"
+                        color="#6e19d7" geometry=""></a-entity>
+                    <a-circle material="color: #1e1820; side: double" rotation="90 0 0"
+                        geometry="radius: 0.5; thetaLength: 458.77; segments: 20" position="0.01289 0.02363 18.14157">
+                    </a-circle>
+                </a-entity>
+
+                <a-entity id="2">
+                    <a-entity position="-18.87042 0 -0.07932" scale="0.01 0.01 0.01"
+                        gltf-model="#tree" color="#6e19d7" geometry=""></a-entity>
+                    <a-circle material="color: #1e1820; side: double" rotation="90 0 0"
+                        geometry="radius: 0.5; thetaLength: 458.77; segments: 20" position="-18.87042 0.01641 -0.07932">
+                    </a-circle>
+                </a-entity>
+
+                <a-entity id="3">
+                    <a-entity position="17.64445 0 -0.14128" scale="0.01 0.01 0.01"
+                        gltf-model="#tree" color="#6e19d7" geometry=""></a-entity>
+                    <a-circle material="color: #1e1820; side: double" rotation="90 0 0"
+                        geometry="radius: 0.5; thetaLength: 458.77; segments: 20" position="17.64445 0.01641 -0.14128">
+                    </a-circle>
+                </a-entity>
+
+                <a-entity id="4">
+                    <a-entity position="0 0 -18.3363" scale="0.01 0.01 0.01" gltf-model="#tree"
+                        color="#6e19d7" geometry=""></a-entity>
+                    <a-circle material="color: #1e1820; side: double" rotation="90 0 0"
+                        geometry="radius: 0.5; thetaLength: 458.77; segments: 20" position="0.02815 0.01641 -18.3795">
+                    </a-circle>
+                </a-entity>
+
             </a-entity>
 
+            <a-entity id="trees" rotation="0 45 0">
+
+                <a-entity id="1">
+                    <a-entity position="0 0 18.16492" scale="0.01 0.01 0.01" gltf-model="#tree"
+                        color="#6e19d7" geometry=""></a-entity>
+                    <a-circle material="color: #1e1820; side: double" rotation="90 0 0"
+                        geometry="radius: 0.5; thetaLength: 458.77; segments: 20" position="0.01289 0.02363 18.14157">
+                    </a-circle>
+                </a-entity>
+
+                <a-entity id="2">
+                    <a-entity position="-18.87042 0 -0.07932" scale="0.01 0.01 0.01"
+                        gltf-model="#tree" color="#6e19d7" geometry=""></a-entity>
+                    <a-circle material="color: #1e1820; side: double" rotation="90 0 0"
+                        geometry="radius: 0.5; thetaLength: 458.77; segments: 20" position="-18.87042 0.01641 -0.07932">
+                    </a-circle>
+                </a-entity>
+
+                <a-entity id="3">
+                    <a-entity position="17.64445 0 -0.14128" scale="0.01 0.01 0.01"
+                        gltf-model="#tree" color="#6e19d7" geometry=""></a-entity>
+                    <a-circle material="color: #1e1820; side: double" rotation="90 0 0"
+                        geometry="radius: 0.5; thetaLength: 458.77; segments: 20" position="17.64445 0.01641 -0.14128">
+                    </a-circle>
+                </a-entity>
+
+                <a-entity id="4">
+                    <a-entity position="0 0 -18.3363" scale="0.01 0.01 0.01" gltf-model="#tree"
+                        color="#6e19d7" geometry=""></a-entity>
+                    <a-circle material="color: #1e1820; side: double" rotation="90 0 0"
+                        geometry="radius: 0.5; thetaLength: 458.77; segments: 20" position="0.02815 0.01641 -18.3795">
+                    </a-circle>
+                </a-entity>
+
+            </a-entity>
         </a-entity>
-        <a-sky color="#030303">
-        </a-sky>
-        <a-entity scale="0.025 0.025 0.025" gltf-model="#room"></a-entity>
-        <a-entity visible="false" scale="0.831 1 1" position="0.094 0 0.708" gltf-model="#nav-mesh" nav-mesh></a-entity>
-
-        <a-plane material="shader: flat" scale="1000 1000 1" color="#030303" rotation="-90 0 0" roughness="0.1"
-            position="0 -10 0"></a-plane>
-
+        <a-plane scale="99.84777 98.00598 1" rotation="-90 0 0" roughness="0.1" position="0 -0.1 0"
+            material="color: #030311; shader: flat" geometry="" static-body></a-plane>
+        <a-sky radius="25" src="#sky" material="" geometry="" rotation="0 55.999999999999996 0"></a-sky>
     </a-scene>
 </body>
 
