@@ -17,10 +17,10 @@
     <a-scene physics inspector-plugin-recast>
         <a-assets>
             <img id="sky" src="./textures/sky/kk.jpg">
+            <img id="ball" src="./textures/ball/balldimpled.png">
             <a-asset id="tree" src="textures/tree/scene.gltf">
                 <a-asset id="lamp" src="textures/lamps/scene.gltf">
                     <a-asset id="nav-mesh" src="textures/navmesh/navmesh.gltf">
-
         </a-assets>
 
         <a-entity id="rig" movement-controls="speed: 0.15; constrainToNavMesh: true" position="0 0 0">
@@ -32,11 +32,37 @@
             <a-entity camera position="0 1.6 0" look-controls></a-entity>
         </a-entity>
 
+        <a-entity position="0.19192 0 0" rotation="0 180 0">
+            <a-entity static-body position="0.32463 1.627 -5.96291" scale="1 1 0.04377"
+                text="value: UI - Board; align: center; width: 4.48; lineHeight: 80; side: front"
+                geometry="primitive: plane; width: 4.3; height: 1.7" material="side: double; color: #161419"></a-entity>
+            <a-box static-body color="#4f4f4f" position="-1.86008 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
+                material="" geometry=""></a-box>
+            <a-box static-body color="#4f4f4f" position="2.45363 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
+                material="" geometry=""></a-box>
+            <a-plane material="color: #1e1820; side: double; roughness: 0.59" position="0.30057 0.00751 -5.52617"
+                scale="5.01352 2.86944 1" rotation="90 0 0" geometry="">
+            </a-plane>
+        </a-entity>
 
-        <a-sphere class="throwable" grabbable dynamic-body position="0 0.25 -0.5" radius="0.50" color="green"
-            mass="0.3"></a-sphere>
+        <a-entity position="-0.34264 0 0" rotation="0 0 0">
+            <a-entity static-body position="0.32463 1.627 -5.96291" scale="1 1 0.04377"
+                text="value: Hi welcome to your Room! \nGo and explore your created room!\n Enjoy it!; align: center; width: 4.48; lineHeight: 80; side: front"
+                geometry="primitive: plane; width: 4.3; height: 1.7" material="side: double; color: #161419"></a-entity>
+            <a-box static-body color="#4f4f4f" position="-1.86008 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
+                material="" geometry=""></a-box>
+            <a-box static-body color="#4f4f4f" position="2.45363 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
+                material="" geometry=""></a-box>
+            <a-plane material="color: #1e1820; side: double; roughness: 0.59" position="0.30057 0.00751 -5.52617"
+                scale="5.01352 2.86944 1" rotation="90 0 0" geometry="">
+            </a-plane>
+        </a-entity>
 
-        <a-box class="throwable" grabbable dynamic-body position="0 0.25 0.5" radius="0.50" color="green"></a-box>
+        <a-sphere src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.5; " position="0 0.25 -0.5"
+            radius="0.30" mass="0.3"></a-sphere>
+
+        <a-box class="throwable" grabbable dynamic-body="angularDamping: 0.5; " position="0 0.25 0.5" radius="0.50"
+            color="green"></a-box>
 
         <a-circle material="color: #1e1820; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
             geometry="radius: 5; thetaLength: 460; segments: 360;" position="0 0.01641 0"></a-circle>
@@ -145,7 +171,7 @@
         <a-plane scale="10 10 1" visible="false" static-body rotation="0 90 0" position="21.11783 -0.1 0.01573"
             material="side: double" geometry="width: 4.24; segmentsHeight: 2; segmentsWidth: 2">
         </a-plane>
-        
+
         <a-plane scale="99.84777 98.00598 1" rotation="-90 0 0" roughness="0.1" position="0 -0.1 0"
             material="color: #030311; shader: flat" geometry=""></a-plane>
         <a-sky radius="25" src="#sky" material="" geometry="" rotation="0 55.999999999999996 0"></a-sky>
