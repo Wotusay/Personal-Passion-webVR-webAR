@@ -14,55 +14,75 @@
 </head>
 
 <body>
-    <a-scene physics inspector-plugin-recast>
+    <a-scene physics inspector-plugin-recast antialias="true">
         <a-assets>
             <img id="sky" src="./textures/sky/kk.jpg">
             <img id="ball" src="./textures/ball/balldimpled.png">
+            <img id="hoop" src="./textures/ball/test.jpg">
+            <img id="box" src="./textures/ball/box.jpg">
             <a-asset id="tree" src="textures/tree/scene.gltf">
                 <a-asset id="lamp" src="textures/lamps/scene.gltf">
                     <a-asset id="nav-mesh" src="textures/navmesh/navmesh.gltf">
         </a-assets>
 
         <a-entity id="rig" movement-controls="speed: 0.15; constrainToNavMesh: true" position="0 0 0">
-            <a-entity id="leftHand" collision-filter="collisionForces: false" box-collider super-hands
-                hand-controls="hand: left; handModelStyle: highPoly; color: #34A2BD" grab></a-entity>
+            <a-entity id="leftHand" collision-filter="collisionForces: false" sphere-collider super-hands
+                hand-controls="hand: left; handModelStyle: highPoly; color: #34A2BD"
+                static-body="shape: sphere; sphereRadius: 0.02;" grab></a-entity>
             <a-entity id="rightHand" collision-filter="collisionForces: false" sphere-collider super-hands
                 hand-controls="hand: right; handModelStyle: highPoly; color: #34A2BD"
                 static-body="shape: sphere; sphereRadius: 0.02;" grab></a-entity>
             <a-entity camera position="0 1.6 0" look-controls></a-entity>
         </a-entity>
 
+        <a-torus  position="11.76523 1.65725 -2.44058" scale="" rotation="90 0 0" material="color: #c87d28"
+            geometry="radius: 0.29; radiusTubular: 0.02"></a-torus>
+        <a-plane src="#hoop" static-body position="11.78556 2.02029 -2.72939" scale="1.4158 1 1" rotation="1 1 1"
+            material="side: double" geometry=""></a-plane>
+        <a-circle material="color: #3b3a40; side: double;" rotation="90 0 0"
+            geometry="radius: 3.56; thetaLength: 360; segments: 36" position="11.72995 0.03 0"></a-circle>
+        <a-box static-body color="#4f4f4f" position="11.80985 1.21025 -2.82787" scale="0.16911 2.54358 0.15376"
+            geometry="" velocity=""></a-box>
+
+
+        <a-circle material="color: #3b3a40; side: double; roughness: 0.59" rotation="90 0 0"
+            geometry="radius: 3.56; thetaLength: 360; segments: 36" position="-11.86513 0.03 0"></a-circle>
+
         <a-entity position="0.19192 0 0" rotation="0 180 0">
             <a-entity static-body position="0.32463 1.627 -5.96291" scale="1 1 0.04377"
-                text="value: UI - Board; align: center; width: 4.48; lineHeight: 80; side: front"
+                text="value: UI - Board; align: center; width: 4.48; lineHeight: 80; side: front;zOffset:0.1"
                 geometry="primitive: plane; width: 4.3; height: 1.7" material="side: double; color: #161419"></a-entity>
             <a-box static-body color="#4f4f4f" position="-1.86008 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
                 material="" geometry=""></a-box>
             <a-box static-body color="#4f4f4f" position="2.45363 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
                 material="" geometry=""></a-box>
-            <a-plane material="color: #1e1820; side: double; roughness: 0.59" position="0.30057 0.00751 -5.52617"
+            <a-plane material="color: #1e1820; side: double; roughness: 0.59" position="0.30057 0.0351 -5.52617"
                 scale="5.01352 2.86944 1" rotation="90 0 0" geometry="">
             </a-plane>
         </a-entity>
 
         <a-entity position="-0.34264 0 0" rotation="0 0 0">
             <a-entity static-body position="0.32463 1.627 -5.96291" scale="1 1 0.04377"
-                text="value: Hi welcome to your Room! \nGo and explore your created room!\n Enjoy it!; align: center; width: 4.48; lineHeight: 80; side: front"
+                text="value: Hi welcome to your Room! \nGo and explore your created room!\n Enjoy it!; align: center; width: 4.48; lineHeight: 80; side: front; zOffset:0.1"
                 geometry="primitive: plane; width: 4.3; height: 1.7" material="side: double; color: #161419"></a-entity>
             <a-box static-body color="#4f4f4f" position="-1.86008 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
                 material="" geometry=""></a-box>
             <a-box static-body color="#4f4f4f" position="2.45363 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
                 material="" geometry=""></a-box>
-            <a-plane material="color: #1e1820; side: double; roughness: 0.59" position="0.30057 0.00751 -5.52617"
+            <a-plane material="color: #1e1820; side: double; roughness: 0.59" position="0.30057 0.0351 -5.52617"
                 scale="5.01352 2.86944 1" rotation="90 0 0" geometry="">
             </a-plane>
         </a-entity>
 
-        <a-sphere src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.5; " position="0 0.25 -0.5"
-            radius="0.30" mass="0.3"></a-sphere>
+        <a-sphere src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.05; " position="13 0.22 -0.5"
+            radius="0.14" mass="0.3"></a-sphere>
+        <a-sphere src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.05; " position="13 1.25 -0.5"
+            radius="0.14" mass="0.3"></a-sphere>
 
-        <a-box class="throwable" grabbable dynamic-body="angularDamping: 0.5; " position="0 0.25 0.5" radius="0.50"
-            color="green"></a-box>
+        <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
+            position="-11.5 2.25 0" radius="0.50"></a-box>
+        <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
+            position="-11.5 0.25 0" radius="0.50"></a-box>
 
         <a-circle material="color: #1e1820; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
             geometry="radius: 5; thetaLength: 460; segments: 360;" position="0 0.01641 0"></a-circle>
