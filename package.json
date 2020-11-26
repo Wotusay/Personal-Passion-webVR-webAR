@@ -7,6 +7,7 @@
   "dependencies": {
     "aframe": "^1.0.4",
     "aframe-gamepad-controls": "^0.6.0",
+    "networked-aframe": "^0.7.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1"
   }
