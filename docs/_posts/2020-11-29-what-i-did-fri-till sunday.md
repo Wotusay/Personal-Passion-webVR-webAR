@@ -13,3 +13,7 @@ On this day i made the hands work in realtime and it worked. I added some event 
 ## Whats next?
 
 I will add more activities / add the posibillty to costumize the room with their friends. And add some more neat ui elements.
+
+## The demo 
+
+[Demo](https://vr-hub.herokuapp.com/)
