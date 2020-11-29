@@ -56,20 +56,26 @@
                             </template>
 
                             <template id="rTemp">
-                                <a-entity rotation="90 0 0 " position="0 1.6 -1">
-                                    <a-entity class="hand1" gltf-model="#hand1"
-                                        animation-mixer="loop:  once;  clip: Open; clampWhenFinished:  true">
-                                    </a-entity>
+                                <a-entity rotation="0 0 0 " position="-1 -1 -1">
                                 </a-entity>
                             </template>
 
                             <template id="lTemp">
-                                <a-entity position="-1 -1 -1">
-                                    <a-entity class="hand2" gltf-model="#hand2"
-                                        animation-mixer="loop:  once; clip: Open; clampWhenFinished:  true">
-                                        ></a-entity>
+                                <a-entity rotaion="0 0 0" position="-1 -1 -1">
                                 </a-entity>
                             </template>
+
+                            <template id="handLeft">
+                                <a-entity gltf-model="#hand2">
+                                </a-entity>
+                            </template>
+
+
+                            <template id="handRight">
+                                <a-entity gltf-model="#hand1">
+                                </a-entity>
+                            </template>
+
 
 
 
@@ -83,15 +89,19 @@
                 collision-filter="collisionForces: false" sphere-collider super-hands
                 hand-controls="hand: left; handModelStyle: highPoly; color: #34A2BD"
                 static-body="shape: sphere; sphereRadius: 0.02;" grab>
+                <a-entity visible='false' networked="template:#handLeft;" rotation="0 0 90" class="hand2" gltf-model="#hand2"
+                    animation-mixer="loop:  once; clip: Open; clampWhenFinished:  true">
+                </a-entity>
             </a-entity>
 
             <a-entity id="rightHand" networked="template:#rTemp;" visible="true"
                 collision-filter="collisionForces: false"
                 hand-controls="hand: right; handModelStyle: highPoly; color: #34A2BD" sphere-collider super-hands
                 static-body="shape: sphere; sphereRadius: 0.02;" grab>
-
+                <a-entity visible='false' networked="template:#handRight;" networked="template:#handLeft;" rotation="0 0 -90" class="hand1" gltf-model="#hand1"
+                    animation-mixer="loop:  once;  clip: Open; clampWhenFinished:  true">
+                </a-entity>
             </a-entity>
-
             <a-entity id="player" camera position="0 1.6 0" look-controls
                 networked="template:#avatar-template; attachTemplateToLocal:false;"> </a-entity>
         </a-entity>
@@ -260,10 +270,57 @@
     </a-scene>
 
     <script>
+
+        const ANIMATIONS = {
+            open: 'Open',
+            point: 'Point',
+            pointThumb: 'Point + Thumb',
+            fist: 'Fist',
+            hold: 'Hold',
+            thumbUp: 'Thumb Up'
+        };
         const rHand = document.querySelector('.hand1');
         const lHand = document.querySelector('.hand2');
         const leftHandController = document.querySelector('#leftHand');
         const rightHandController = document.querySelector('#rightHand');
+
+
+        leftHandController.addEventListener('pointup', (e) => handsAnimations(lHand, e, ANIMATIONS.hold));
+        rightHandController.addEventListener('pointup', (e) => handsAnimations(rHand, e, ANIMATIONS.hold));
+
+        leftHandController.addEventListener('pointdown', (e) => handsAnimations(lHand, e, ANIMATIONS.open));
+        rightHandController.addEventListener('pointdown', (e) => handsAnimations(rHand, e, ANIMATIONS.open));
+
+        leftHandController.addEventListener('pistolstart', (e) => handsAnimations(lHand, e, ANIMATIONS.thumbUp));
+        rightHandController.addEventListener('pistolstart', (e) => handsAnimations(rHand, e, ANIMATIONS.thumbUp));
+
+        leftHandController.addEventListener('pistolend', (e) => handsAnimations(lHand, e, ANIMATIONS.open));
+        rightHandController.addEventListener('pistolend', (e) => handsAnimations(rHand, e, ANIMATIONS.open));
+
+        leftHandController.addEventListener('pointingstart', (e) => handsAnimations(lHand, e, ANIMATIONS.point));
+        rightHandController.addEventListener('pointingstart', (e) => handsAnimations(rHand, e, ANIMATIONS.point));
+
+        leftHandController.addEventListener('pointingend', (e) => handsAnimations(lHand, e, ANIMATIONS.open));
+        rightHandController.addEventListener('pointingend', (e) => handsAnimations(rHand, e, ANIMATIONS.open));
+
+        leftHandController.addEventListener('gripdown', (e) => handsAnimations(lHand, e, ANIMATIONS.fist));
+        rightHandController.addEventListener('gripdown', (e) => handsAnimations(rHand, e, ANIMATIONS.fist));
+
+        leftHandController.addEventListener('gripup', (e) => handsAnimations(lHand, e, ANIMATIONS.open));
+        rightHandController.addEventListener('gripup', (e) => handsAnimations(rHand, e, ANIMATIONS.open));
+
+        const handsAnimations = (hand, e, state) => {
+            if (e) {
+                console.log(e)
+                console.log(state)
+                hand.setAttribute('animation-mixer', {
+                    clip: state
+                });
+
+                console.log(hand)
+                e.preventDefault()
+            }
+        };
 
         NAF.schemas.add({
             template: '#avatar-template',
@@ -296,74 +353,29 @@
                 'rotation',
             ]
         });
+
+        NAF.schemas.add({
+            template: '#handLeft',
+            components: [
+                'position',
+                'rotation',
+                'animation-mixer'
+            ]
+        });
+
+        NAF.schemas.add({
+            template: '#handRight',
+            components: [
+                'position',
+                'rotation',
+                'animation-mixer'
+            ]
+        });
+
         const onConnect = () => {
             console.log("onConnect", new Date());
         }
 
-
-        const ANIMATIONS = {
-            open: 'Open',
-            point: 'Point',
-            pointThumb: 'Point + Thumb',
-            fist: 'Fist',
-            hold: 'Hold',
-            thumbUp: 'Thumb Up'
-        };
-
-
-
-        const handsAnimations = (hand, e, state) => {
-            if (e) {
-                hand.setAttribute('animation-mixer', {
-                    clip: state
-                });
-            }
-        };
-
-
-        const handListners = () => {
-            leftHandController.addEventListener('pointup', (e) => handsAnimations(lHand, e, ANIMATIONS.hold));
-            rightHandController.addEventListener('pointup', (e) => handsAnimations(rHand, e, ANIMATIONS.hold));
-
-            leftHandController.addEventListener('thumbup', (e) => handsAnimations(lHand, e, ANIMATIONS.thumbUp));
-            rightHandController.addEventListener('thumbup', (e) => handsAnimations(rHand, e, ANIMATIONS.thumbUp));
-
-            leftHandController.addEventListener('thumbdown', (e) => handsAnimations(lHand, e, ANIMATIONS.open));
-            rightHandController.addEventListener('thumbdown', (e) => handsAnimations(rHand, e, ANIMATIONS.open));
-
-            leftHandController.addEventListener('pointdown', (e) => handsAnimations(lHand, e, ANIMATIONS.open));
-            rightHandController.addEventListener('pointdown', (e) => handsAnimations(rHand, e, ANIMATIONS.open));
-
-            leftHandController.addEventListener('pistolstart', (e) => handsAnimations(lHand, e, ANIMATIONS.pointThumb));
-            rightHandController.addEventListener('pistolstart', (e) => handsAnimations(rHand, e, ANIMATIONS.pointThumb));
-
-            leftHandController.addEventListener('pistolend', (e) => handsAnimations(lHand, e, ANIMATIONS.open));
-            rightHandController.addEventListener('pistolend', (e) => handsAnimations(rHand, e, ANIMATIONS.open));
-
-            leftHandController.addEventListener('pointingstart', (e) => handsAnimations(lHand, e, ANIMATIONS.point));
-            rightHandController.addEventListener('pointingstart', (e) => handsAnimations(rHand, e, ANIMATIONS.point));
-
-            leftHandController.addEventListener('pointingend', (e) => handsAnimations(lHand, e, ANIMATIONS.open));
-            rightHandController.addEventListener('pointingend', (e) => handsAnimations(rHand, e, ANIMATIONS.open));
-
-            leftHandController.addEventListener('gripdown', (e) => handsAnimations(lHand, e, ANIMATIONS.fist));
-            rightHandController.addEventListener('gripdown', (e) => handsAnimations(rHand, e, ANIMATIONS.fist));
-
-            leftHandController.addEventListener('gripup', (e) => handsAnimations(lHand, e, ANIMATIONS.open));
-            rightHandController.addEventListener('gripup', (e) => handsAnimations(rHand, e, ANIMATIONS.open));
-
-        }
-
-        const hands = () => {
-            console.log(rHand);
-            console.log(lHand)
-
-            if (lHand || rHand) {
-                handListners();
-            }
-        }
-
-        hands();
 
     </script>
 </body>
