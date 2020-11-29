@@ -8,6 +8,8 @@
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
+    <script
+        src="https://unpkg.com/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
     <script src="/build.js"></script>
     <script>window.NAF || document.write('<script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js">\x3C/script>')</script>
     <script
@@ -21,6 +23,7 @@
     room: dev;
     debug: true;
     adapter: webrtc;
+    audio: true;
     " physics antialias="true">
         <a-assets>
             <img id="sky" src="./textures/sky/kk.jpg">
@@ -34,8 +37,8 @@
                         <a-asset id="nav-mesh" src="textures/navmesh/navmesh.gltf">
 
                             <template id="avatar-template">
-                                <a-entity scale="0.5 0.5 0.5" class="avatar">
-                                    <a-sphere class="head" color="#ffffff" scale="0.45 0.5 0.4"></a-sphere>
+                                <a-entity scale="0.5 0.5 0.5" class="avatar" networked-audio-source="maxDistance:5">
+                                    <a-sphere random-color class="head" color="#ffffff" scale="0.45 0.5 0.4"></a-sphere>
                                     <a-entity class="face" position="0 0.05 0">
                                         <a-sphere class="eye" color="#efefef" position="0.16 0.1 -0.35"
                                             scale="0.12 0.12 0.12">
@@ -52,7 +55,7 @@
                             </template>
 
                             <template id="rig-tmp">
-                                <a-entity id="rig" position="0 0 0"></a-entity>
+                                <a-entity id="rig" position="1 0 1"></a-entity>
                             </template>
 
                             <template id="rTemp">
@@ -66,13 +69,13 @@
                             </template>
 
                             <template id="handLeft">
-                                <a-entity gltf-model="#hand2">
+                                <a-entity random-color gltf-model="#hand2">
                                 </a-entity>
                             </template>
 
 
                             <template id="handRight">
-                                <a-entity gltf-model="#hand1">
+                                <a-entity random-color gltf-model="#hand1">
                                 </a-entity>
                             </template>
 
@@ -89,8 +92,8 @@
                 collision-filter="collisionForces: false" sphere-collider super-hands
                 hand-controls="hand: left; handModelStyle: highPoly; color: #34A2BD"
                 static-body="shape: sphere; sphereRadius: 0.02;" grab>
-                <a-entity visible='false' networked="template:#handLeft;" rotation="0 0 90" class="hand2" gltf-model="#hand2"
-                    animation-mixer="loop:  once; clip: Open; clampWhenFinished:  true">
+                <a-entity visible='false' networked="template:#handLeft;" rotation="0 0 90" class="hand2"
+                    gltf-model="#hand2" animation-mixer="loop:  once; clip: Open; clampWhenFinished:  true">
                 </a-entity>
             </a-entity>
 
@@ -98,7 +101,8 @@
                 collision-filter="collisionForces: false"
                 hand-controls="hand: right; handModelStyle: highPoly; color: #34A2BD" sphere-collider super-hands
                 static-body="shape: sphere; sphereRadius: 0.02;" grab>
-                <a-entity visible='false' networked="template:#handRight;" networked="template:#handLeft;" rotation="0 0 -90" class="hand1" gltf-model="#hand1"
+                <a-entity visible='false' networked="template:#handRight;" networked="template:#handLeft;"
+                    rotation="0 0 -90" class="hand1" gltf-model="#hand1"
                     animation-mixer="loop:  once;  clip: Open; clampWhenFinished:  true">
                 </a-entity>
             </a-entity>
