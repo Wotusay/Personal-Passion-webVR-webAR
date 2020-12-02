@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
+    <script
+        src="https://unpkg.com/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.min.js"></script>
+
+</head>
+
+<body>
+    <a-scene>
+
+        <a-camera position="0 1.6 0"></a-camera>
+        <a-assets>
+            <img id="sky" src="./textures/sky/kk.jpg">
+        </a-assets>
+        <a-entity position="0 1.6 0" scale="0.5 0.5 0.5" class="avatar" networked-audio-source>
+            <a-box random-color class="head" color="#ffffff" scale="0.65927 0.68061 0.56324"
+                material="color: #30612f" geometry=""></a-box>
+            <a-entity class="face" position="0 0.05 0">
+                <a-sphere class="eye" color="#efefef" position="0.16 0.1 -0.35" scale="0.12 0.12 0.12">
+                    <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2">
+                    </a-sphere>
+                </a-sphere>
+                <a-sphere class="eye" color="#efefef" position="-0.16 0.1 -0.35" scale="0.12 0.12 0.12">
+                    <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2">
+                    </a-sphere>
+                </a-sphere>
+
+            </a-entity>
+            <a-box random-color position="-0.00385 -0.91867 0" scale="0.57923 1.17516 0.40542" material=""
+                geometry="segmentsHeight: 5; segmentsWidth: 20; segmentsDepth: 5"></a-box>
+        </a-entity>
+
+
+
+        <a-sky radius="25" src="#sky" material="" geometry="" rotation="0 55.999999999999996 0"></a-sky>
+        <a-circle material="color: #ec2727; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
+            geometry="radius: 20; thetaLength: 460; segments: 360" position=""></a-circle>
+
+    </a-scene>
+
+</body>
+
+</html>
