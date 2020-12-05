@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
 </head>
 
@@ -36,23 +36,40 @@
         </a-entity>
 
 
-        <a-box class="clickable" visible="false" start-event animation scale="0.7 0.7 0.7"
+        <a-box class="clickable" visible="true" start-event animation scale="0.7 0.7 0.7"
             position="-0.07899 1.813 -3.137" material="color: #5348ea" geometry="depth: 0.94; width: 1.96">
             <a-text position="-0.66 0 0.52334" value="Go to a park!" text="">
             </a-text>
         </a-box>
 
-        <a-entity>
 
-            <a-text position="-0.81911 2.65 -2.52675" scale="" value="Choose a park" text=""></a-text>
-            <a-box class="clickable" visible="" animation="" scale="0.7 0.7 0.7" position="-0.079 2.13958 -3.137"
-                material="color: #ea7153" geometry="depth: 0.94; width: 2.96">
+        <a-entity id="duck" scale="0.5 0.5 0.5" position="3.08256 0.02532 2.68012" rotation="0 -75 0">
+            <a-box position="-1.47366 1.28076 0" scale="0.49903 0.1551 0.5785" material="color: #ec8046"
+                geometry="segmentsWidth: 10">
+            </a-box>
+            <a-sphere position="0 0.6314 0" scale="1.41085 0.8619 1" rotation="" material="color: #c7c954"
+                geometry="radius: 0.81; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
+
+            <a-sphere position="-1.0529 1.55047 -0.48445" scale="1.01542 1.03442 1" rotation=""
+                material="color: #0a0a0a" geometry="radius: 0.09; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
+
+            <a-sphere position="-1.0529 1.55047 0.4601" scale="1.01542 1.03442 1" rotation="" material="color: #0a0a0a"
+                geometry="radius: 0.09; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
+
+            <a-sphere position="-0.99081 1.31257 0" scale="1.01542 1.03442 1" rotation="" material="color: #c7c954"
+                geometry="radius: 0.5; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
+        </a-entity>
+
+        <a-entity class="menu" visible="false">
+            <a-text position="-0.81911 3.55 -4.011" scale="" value="Choose a park" text=""></a-text>
+            <a-box public-park class="clickable" visible="" animation="" scale="0.7 0.7 0.7"
+                position="-0.079 2.13958 -3.137" material="color: #ea7153" geometry="depth: 0.94; width: 2.96">
                 <a-text position="-1 0 0.523" value="Go to a public park!" text="">
                 </a-text>
             </a-box>
 
-            <a-box class="clickable" visible="" animation="" scale="0.7 0.7 0.7" position="-0.07899 1.22112 -3.137"
-                material="color: #000000" geometry="depth: 0.94; width: 2.96">
+            <a-box private-park class="clickable" visible="" animation="" scale="0.7 0.7 0.7"
+                position="-0.07899 1.22112 -3.137" material="color: #000000" geometry="depth: 0.94; width: 2.96">
                 <a-text position="-1 0 0.52334" value="Go to a private park!" text="">
                 </a-text>
             </a-box>
