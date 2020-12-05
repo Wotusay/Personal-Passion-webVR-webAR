@@ -23,7 +23,7 @@
 </head>
 
 <body>
-    <a-scene networked-scene="
+    <a-scene light="defaultLightsEnabled: false" networked-scene="
     app: myApp;
     room: dev;
     adapter: webrtc;
@@ -91,6 +91,10 @@
                                 </a-entity>
                             </template>
         </a-assets>
+        <a-entity light="type: ambient; color: #BBB"></a-entity>
+        <a-entity light="type: directional; color: #fbd723; intensity: 0.6" position="-0.5 1 1"></a-entity>
+        <a-entity light="type: directional; color: #346579; intensity: 0.3" position="0.5 1 1"></a-entity>
+        <a-entity light="color: #241405; intensity: 0.26" position="1.5 1 1"></a-entity>
 
         <a-entity position="0 7 0" sound="src:#birds; autoplay:true; loop:true; volume:0.75;">
 

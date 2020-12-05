@@ -7,25 +7,56 @@
     <title>Document</title>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
-    <script src="https://unpkg.com/aframe-orbit-controls@1.2.0/dist/aframe-orbit-controls.min.js"></script>
-
 </head>
 
 <body>
-    <a-scene light="defaultLightsEnabled: false" vr-mode-ui="enabled: true">
+    <script src="./js/begin-screen.js"></script>
+    <a-scene fog="color:  #e0e1db;  far:  40;  near:  0;  density:  0" light="defaultLightsEnabled: false"
+        vr-mode-ui="enabled: true">
+        <a-assets>
+            <img id="sky" src="./textures/sky/kk.jpg">
+        </a-assets>
 
         <a-entity light="type: ambient; color: #BBB"></a-entity>
         <a-entity light="type: directional; color: #fbd723; intensity: 0.6" position="-0.5 1 1"></a-entity>
         <a-entity light="type: directional; color: #346579; intensity: 0.3" position="0.5 1 1"></a-entity>
         <a-entity light="color: #241405; intensity: 0.26" position="1.5 1 1"></a-entity>
 
-        <a-entity camera
-            orbit-controls="target: 0 1.6 0; autoRotate: true; enableKeys:false; enablePan:false; enableRotate:false; enableZoom:false; autoRotateSpeed:0.1"
-            wasd-controls-enabled="false" position="0 1 0">
+        <a-entity position="0 1.6 0">
+            <a-entity camera look-controls wasd-controls-enabled="false" mouse-cursor>
+                <a-entity scale="1 1 1" cursor="fuse: true; maxDistance: 30; timeout: 500" position="0 0 -1"
+                    geometry="primitive:  ring;  radiusInner:  0.01;  radiusOuter:  0.02"
+                    material="color: white; shader: flat" raycaster="objects: .clickable"
+                    animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
+                    animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
+                    animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1">
+
+                </a-entity>
+            </a-entity>
         </a-entity>
-        <a-assets>
-            <img id="sky" src="./textures/sky/kk.jpg">
-        </a-assets>
+
+
+        <a-box class="clickable" visible="false" start-event animation scale="0.7 0.7 0.7"
+            position="-0.07899 1.813 -3.137" material="color: #5348ea" geometry="depth: 0.94; width: 1.96">
+            <a-text position="-0.66 0 0.52334" value="Go to a park!" text="">
+            </a-text>
+        </a-box>
+
+        <a-entity>
+
+            <a-text position="-0.81911 2.65 -2.52675" scale="" value="Choose a park" text=""></a-text>
+            <a-box class="clickable" visible="" animation="" scale="0.7 0.7 0.7" position="-0.079 2.13958 -3.137"
+                material="color: #ea7153" geometry="depth: 0.94; width: 2.96">
+                <a-text position="-1 0 0.523" value="Go to a public park!" text="">
+                </a-text>
+            </a-box>
+
+            <a-box class="clickable" visible="" animation="" scale="0.7 0.7 0.7" position="-0.07899 1.22112 -3.137"
+                material="color: #000000" geometry="depth: 0.94; width: 2.96">
+                <a-text position="-1 0 0.52334" value="Go to a private park!" text="">
+                </a-text>
+            </a-box>
+        </a-entity>
 
         <a-entity position="2.3638 0 -10.19236" rotation="" id="pool">
             <a-cylinder position="1.32951 -0.00413 0" scale="" material="color: #45a1e8"
@@ -35,7 +66,6 @@
             <a-cylinder position="1.32951 -0.00413 2.51547" scale="" material="color: #45a1e8"
                 geometry="height: 0.14; radius: 1.39; segmentsHeight: 5; segmentsRadial: 10"></a-cylinder>
         </a-entity>
-
 
         <a-entity position="-2.3638 0 10.19236" rotation="" id="pool">
             <a-cylinder position="1.32951 -0.00413 0" scale="" material="color: #45a1e8"
@@ -462,6 +492,7 @@
                 geometry="radius: 20; thetaLength: 460; segments: 360" position=""></a-circle>
 
     </a-scene>
+
 
 </body>
 
