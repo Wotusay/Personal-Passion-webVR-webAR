@@ -76,7 +76,39 @@
                 </a-text>
             </a-box>
         </a-entity>
+        
 
+        <a-entity class="menu_private" visible="false">
+            <a-text position="-0.81911 3.55 -4.011" scale="" value="Choose a park" text=""></a-text>
+            <a-box create class="create" visible="" animation="" scale="0.7 0.7 0.7"
+                position="-0.079 2.13958 -3.137" material="color: #ea7153" geometry="depth: 0.94; width: 2.96">
+                <a-text position="-1 0 0.523" value="Create a private park!" text="">
+                </a-text>
+            </a-box>
+
+            <a-box join  class="join" visible="" animation="" scale="0.7 0.7 0.7"
+                position="-0.07899 1.22112 -3.137" material="color: #000000" geometry="depth: 0.94; width: 2.96">
+                <a-text position="-1 0 0.52334" value="Join a private park!" text="">
+                </a-text>
+            </a-box>
+        </a-entity>
+
+
+        <a-entity visible="false" scale="0.5 0.5 0.5" position="0 0 -1 " create-menu class="create_menu">
+            <a-box geometry="width:2.96" color="white" position="0 3.8 -2.5" scale="1 1 1"  >
+                <a-text color="#000000" position="-1.1 0 0.5" value="Your code..." ></a-text>
+            </a-box>
+            <a-box class="numpad" numpad id="1" color="#000000" position="-1.5 2.6 -2.5" scale="1 1 1" >
+                <a-text position="-0.1 0 0.5" value="1" ></a-text>
+            </a-box>
+            <a-box class="numpad" numpad id="2" color="#000000" position="0 2.6 -2.5" scale="1 1 1" >
+                <a-text position="-0.1 0 0.5" value="2" ></a-text>
+            </a-box>
+            <a-box class="numpad" numpad id="3" color="#000000" position="1.5 2.6 -2.5" scale="1 1 1" >
+                <a-text position="-0.1 0 0.5" value="3" ></a-text>
+            </a-box>
+
+        </a-entity>
 
         <a-entity class="portalsPublic" visible="false">
             <a-link class="portal" rotation="0 0 0" position="0 1.4 -4.011" href="secondroom.html" image="#thumbnail"
