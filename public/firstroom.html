@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebVR - Wout Salembier</title>
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.min.js"></script>
+    <script
+        src="https://unpkg.com/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
+    <script src="/build.js"></script>
+    <script>window.NAF || document.write('<script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js">\x3C/script>')</script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.min.js"></script>
+    <script src="https://unpkg.com/aframe-ambisonic-component"></script>
+    <script src="./js/hit.js"> </script>
+    <script src="./js/dynamic-room.js"></script>
+</head>
+
+<body>
+    <a-scene light="defaultLightsEnabled: false" networked-scene="
+    app: myApp;
+    room: firstpark;
+    adapter: webrtc;
+    audio: true;
+    " physics fog="color:  #e0e1db;  far:  40;  near:  0;  density:  0">
+        <a-assets>
+            <audio id="birds" src="./sounds/birds.mp3"></audio>
+            <img id="sky" src="./textures/sky/kk.jpg">
+            <img id="ball" src="./textures/ball/balldimpled.png">
+            <img id="hoop" src="./textures/ball/test.jpg">
+            <img id="box" src="./textures/ball/box.jpg">
+            <a-asset id="hand1" src="./textures/hands/rightHandHigh.glb">
+                <a-asset id="hand2" src="./textures/hands/leftHandHigh.glb">
+
+                    <a-asset id="tree" src="textures/tree/scene.gltf">
+                        <a-asset id="nav-mesh" src="textures/navmesh/navmesh.gltf">
+
+                            <template id="avatar-template">
+                                <a-entity scale="0.5 0.5 0.5" class="avatar" networked-audio-source>
+                                    <a-box random-color="" class="head" color="#ffffff" scale="0.65927 0.68061 0.56324"
+                                        material="color: #30612f" geometry=""></a-box>
+                                    <a-entity class="face" position="0 0.05 0">
+                                        <a-sphere class="eye" color="#efefef" position="0.16 0.1 -0.35"
+                                            scale="0.12 0.12 0.12">
+                                            <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2">
+                                            </a-sphere>
+                                        </a-sphere>
+                                        <a-sphere class="eye" color="#efefef" position="-0.16 0.1 -0.35"
+                                            scale="0.12 0.12 0.12">
+                                            <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2">
+                                            </a-sphere>
+                                        </a-sphere>
+                                    </a-entity>
+                            </template>
+
+                            <template id="rig-tmp">
+                                <a-entity id="rig" position="0 1.6 0"></a-entity>
+                            </template>
+
+                            <template id="body">
+                                <a-box random-color="" rotation="0 0 0" position="0 0.922 0"
+                                    scale="0.27923 0.905 0.26213" material="color: #828c20"
+                                    geometry="segmentsHeight: 5; segmentsWidth: 20; segmentsDepth: 5">
+                                </a-box>
+                            </template>
+
+                            <template id="rTemp">
+                                <a-entity rotation="0 0 0 " position="-1 -10 -1">
+                                </a-entity>
+                            </template>
+
+                            <template id="lTemp">
+                                <a-entity rotaion="0 0 0" position="-1 -10 -1">
+                                </a-entity>
+                            </template>
+
+                            <template id="handLeft">
+                                <a-entity random-color gltf-model="#hand2">
+                                </a-entity>
+                            </template>
+
+
+                            <template id="handRight">
+                                <a-entity random-color gltf-model="#hand1">
+                                </a-entity>
+                            </template>
+        </a-assets>
+        <a-entity light="type: ambient; color: #BBB"></a-entity>
+        <a-entity light="type: directional; color: #fbd723; intensity: 0.6" position="-0.5 1 1"></a-entity>
+        <a-entity light="type: directional; color: #346579; intensity: 0.3" position="0.5 1 1"></a-entity>
+        <a-entity light="color: #241405; intensity: 0.26" position="1.5 1 1"></a-entity>
+
+        <a-entity position="0 7 0" sound="src:#birds; autoplay:true; loop:true; volume:0.75;">
+
+        </a-entity>
+        <a-entity id="rig" movement-controls="speed: 0.15; constrainToNavMesh: true"
+            networked="template:#rig-tmp; attachTemplateToLocal:false;">
+
+            <a-entity id="leftHand" networked="template:#lTemp;" visible="true" collision-filter="collisionForces: true"
+                sphere-collider physics-collider super-hands
+                hand-controls="hand: left; handModelStyle: highPoly; color: #34A2BD"
+                static-body="shape: sphere; sphereRadius: 0.02;" grab>
+                <a-entity visible='false' networked="template:#handLeft;" rotation="0 0 90" class="hand2"
+                    gltf-model="#hand2" animation-mixer="loop:  once; clip: Open; clampWhenFinished:  true">
+                </a-entity>
+            </a-entity>
+
+            <a-entity id="rightHand" networked="template:#rTemp;" visible="true"
+                collision-filter="collisionForces: false" physics-collider
+                hand-controls="hand: right; handModelStyle: highPoly; color: #34A2BD" sphere-collider super-hands
+                static-body="shape: sphere; sphereRadius: 0.02;" grab>
+                <a-entity visible='false' networked="template:#handRight;" networked="template:#handLeft;"
+                    rotation="0 0 -90" class="hand1" gltf-model="#hand1"
+                    animation-mixer="loop:  once;  clip: Open; clampWhenFinished:  true">
+                </a-entity>
+            </a-entity>
+            <a-entity id="player" camera position="0 1.6 0" look-controls
+                networked="template:#avatar-template; attachTemplateToLocal:false;">
+            </a-entity>
+
+            <a-entity static-body position="0 0.9 0" rotation="0 0 0"
+                networked="template:#body; attachTemplateToLocal:false;" visible="true">
+            </a-entity>
+        </a-entity>
+
+
+        <a-entity id="duck" scale="0.1 0.1 0.1" position="4.08256 0.02532 -11.68012" rotation="0 0 0"
+            animation="property: rotation; to: 0 360 0; dur:4000; easing: linear; loop:true;">
+            <a-box position="-1.47366 1.28076 0" scale="0.49903 0.1551 0.5785" material="color: #ec8046"
+                geometry="segmentsWidth: 10">
+            </a-box>
+            <a-sphere position="0 0.6314 0" scale="1.41085 0.8619 1" rotation="" material="color: #c7c954"
+                geometry="radius: 0.81; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
+
+            <a-sphere position="-1.0529 1.55047 -0.48445" scale="1.01542 1.03442 1" rotation=""
+                material="color: #0a0a0a" geometry="radius: 0.09; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
+
+            <a-sphere position="-1.0529 1.55047 0.4601" scale="1.01542 1.03442 1" rotation="" material="color: #0a0a0a"
+                geometry="radius: 0.09; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
+
+            <a-sphere position="-0.99081 1.31257 0" scale="1.01542 1.03442 1" rotation="" material="color: #c7c954"
+                geometry="radius: 0.5; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
+        </a-entity>
+
+        <a-entity id="duck" scale="0.1 0.1 0.1" position="5.29536 0.02532 -10.1826" rotation="0 0 0" animation="property: rotation; to: 0 360 0; dur:3000; easing: linear; loop:true;">
+            <a-box position=" -1.47366 1.28076 0" scale="0.49903 0.1551 0.5785" material="color: #ec8046"
+            geometry="segmentsWidth: 10">
+            </a-box>
+            <a-sphere position="0 0.6314 0" scale="1.41085 0.8619 1" rotation="" material="color: #c7c954"
+                geometry="radius: 0.81; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
+
+            <a-sphere position="-1.0529 1.55047 -0.48445" scale="1.01542 1.03442 1" rotation=""
+                material="color: #0a0a0a" geometry="radius: 0.09; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
+
+            <a-sphere position="-1.0529 1.55047 0.4601" scale="1.01542 1.03442 1" rotation="" material="color: #0a0a0a"
+                geometry="radius: 0.09; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
+
+            <a-sphere position="-0.99081 1.31257 0" scale="1.01542 1.03442 1" rotation="" material="color: #c7c954"
+                geometry="radius: 0.5; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
+        </a-entity>
+
+        <a-entity rotation="0 29.999999999999996 0" position="2.5299 0.00202 -11.38693" id="pool">
+            <a-cylinder position="1.32951 -0.00413 0" scale="" material="color: #45a1e8"
+                geometry="height: 0.14; radius: 1.39; segmentsHeight: 5; segmentsRadial: 10"></a-cylinder>
+            <a-cylinder position="2.72185 -0.00413 1.75512" scale="" material="color: #45a1e8"
+                geometry="height: 0.14; radius: 1.39; segmentsHeight: 5; segmentsRadial: 10"></a-cylinder>
+            <a-cylinder position="1.32951 -0.00413 2.51547" scale="" material="color: #45a1e8"
+                geometry="height: 0.14; radius: 1.39; segmentsHeight: 5; segmentsRadial: 10"></a-cylinder>
+        </a-entity>
+
+        <a-entity id="boxes" class="addboxes" position="-8.6237 0 0.07476" scale="" rotation="0 90 0">
+            <a-cylinder physics-collider static-body position="-0.0012 0.99543 0.00051" scale=""
+                material="color: #2a27ec" geometry="height: 0.06; radius: 0.1; segmentsHeight: 16"></a-cylinder>
+            <a-box physics-collider static-body position="0 0.47642 0" scale="0.30548 1.02773 0.3009"
+                material="color: #404040" geometry=""></a-box>
+            <a-text position="-0.30787 1.18114 -0.12028" value="Add box" text=""></a-text>
+        </a-entity>
+
+        <a-torus position="11.76523 1.65725 -2.44058" scale="" rotation="90 0 0" material="color: #c87d28"
+            geometry="radius: 0.29; radiusTubular: 0.02"></a-torus>
+        <a-plane src="#hoop" static-body position="11.78556 2.02029 -2.72939" scale="1.4158 1 1" rotation="1 1 1"
+            material="side: double" geometry=""></a-plane>
+        <a-circle material="color: #3b3a40; side: double;" rotation="90 0 0"
+            geometry="radius: 3.56; thetaLength: 360; segments: 36" position="11.72995 0.03 0"></a-circle>
+        <a-box static-body color="#4f4f4f" position="11.80985 1.21025 -2.82787" scale="0.16911 2.54358 0.15376"
+            geometry="" velocity=""></a-box>
+
+        <a-circle material="color: #3b3a40; side: double; roughness: 0.59" rotation="90 0 0"
+            geometry="radius: 3.56; thetaLength: 360; segments: 36" position="-11.86513 0.03 0"></a-circle>
+
+        <a-entity position="0.19192 0 0" rotation="0 180 0">
+            <a-entity static-body position="0.32463 1.627 -5.96291" scale="1 1 0.04377"
+                text="value: UI - Board; align: center; width: 4.48; lineHeight: 80; side: front;zOffset:0.1"
+                geometry="primitive: plane; width: 4.3; height: 1.7" material="side: double; color: #161419">
+            </a-entity>
+            <a-box static-body color="#4f4f4f" position="-1.86008 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
+                material="" geometry=""></a-box>
+            <a-box static-body color="#4f4f4f" position="2.45363 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
+                material="" geometry=""></a-box>
+            <a-plane material="color: #1e1820; side: double; roughness: 0.59" position="0.30057 0.0351 -5.52617"
+                scale="5.01352 2.86944 1" rotation="90 0 0" geometry="">
+            </a-plane>
+        </a-entity>
+
+        <a-entity class="flowers" id="flowerzz" rotation="0 65 0">
+            <a-entity position="-7.81213 0 6.73198" id="flowerpatch">
+                <a-entity id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #ce6659"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.25 0 0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #bcc6be"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.5 0 -0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #21acf0"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.5 0 0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #0a8e06"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.25 0 -0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #6720ec"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+            </a-entity>
+
+            <a-entity position="7.81213 0 -6.73198" id="flowerpatch">
+                <a-entity id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #ce6659"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.25 0 0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #bcc6be"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.5 0 -0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #21acf0"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.5 0 0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #0a8e06"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.25 0 -0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #6720ec"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+            </a-entity>
+            <a-entity position="-7.81213 0 -6.73198" id="flowerpatch">
+                <a-entity id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #ce6659"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.25 0 0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #bcc6be"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.5 0 -0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #21acf0"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.5 0 0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #0a8e06"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.25 0 -0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #6720ec"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+            </a-entity>
+
+            <a-entity position="7.81213 0 6.73198" id="flowerpatch">
+                <a-entity id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #ce6659"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.25 0 0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #bcc6be"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.5 0 -0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #21acf0"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.5 0 0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #0a8e06"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.25 0 -0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #6720ec"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+            </a-entity>
+        </a-entity>
+
+        <a-entity class="flowers" id="flowerzz">
+            <a-entity position="-7.81213 0 6.73198" id="flowerpatch">
+                <a-entity id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #ce6659"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.25 0 0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #bcc6be"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.5 0 -0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #21acf0"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.5 0 0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #0a8e06"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.25 0 -0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #6720ec"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+            </a-entity>
+
+            <a-entity position="7.81213 0 -6.73198" id="flowerpatch">
+                <a-entity id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #ce6659"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.25 0 0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #bcc6be"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.5 0 -0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #21acf0"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.5 0 0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #0a8e06"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.25 0 -0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #6720ec"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+            </a-entity>
+            <a-entity position="-7.81213 0 -6.73198" id="flowerpatch">
+                <a-entity id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #ce6659"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.25 0 0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #bcc6be"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.5 0 -0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #21acf0"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.5 0 0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #0a8e06"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.25 0 -0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #6720ec"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+            </a-entity>
+
+            <a-entity position="7.81213 0 6.73198" id="flowerpatch">
+                <a-entity id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #ce6659"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.25 0 0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #bcc6be"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="0.5 0 -0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #21acf0"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.5 0 0.35" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #0a8e06"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+
+                <a-entity position="-0.25 0 -0.45" id="flower" class="flower">
+                    <a-cylinder rotation="29.999999999999996 0 0" scale="0.5 0.5 0.5"
+                        position="-0.33803 0.14302 0.00188" height="3" radius="1.5" material="color: #f6fa33"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 6">
+                    </a-cylinder>
+                    <a-cylinder random-color="" rotation="29.999999999999996 0 0" scale=""
+                        position="-0.33803 0.13754 0.00188" height="3" radius="1.5" material="color: #6720ec"
+                        geometry="height: 0.005; radius: 0.05; segmentsRadial: 5">
+                    </a-cylinder>
+                    <a-box material="color: #4ca540" scale="0.02004 0.14455 -0.01319"
+                        position="-0.33876 0.06655 0.00193" geometry=""></a-box>
+                </a-entity>
+            </a-entity>
+        </a-entity>
+        <a-entity position="-0.34264 0 0" rotation="0 0 0">
+            <a-entity static-body position="0.32463 1.627 -5.96291" scale="1 1 0.04377"
+                text="value: Hi welcome to your Room! \nGo and explore your created room!\n Enjoy it!; align: center; width: 4.48; lineHeight: 80; side: front; zOffset:0.1"
+                geometry="primitive: plane; width: 4.3; height: 1.7" material="side: double; color: #161419">
+            </a-entity>
+            <a-box static-body color="#4f4f4f" position="-1.86008 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
+                material="" geometry=""></a-box>
+            <a-box static-body color="#4f4f4f" position="2.45363 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
+                material="" geometry=""></a-box>
+            <a-plane material="color: #1e1820; side: double; roughness: 0.59" position="0.30057 0.0351 -5.52617"
+                scale="5.01352 2.86944 1" rotation="90 0 0" geometry="">
+            </a-plane>
+        </a-entity>
+
+        <a-sphere class="ball1" src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.05; "
+            position="13 0.22 -0.5" radius="0.14" mass="0.3"></a-sphere>
+        <a-sphere class="ball2" src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.05; "
+            position="13 1.25 -0.5" radius="0.14" mass="0.3"></a-sphere>
+
+        <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
+            position="-11.5 2.25 0" radius="0.50"></a-box>
+        <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
+            position="-11.5 0.25 0" radius="0.50"></a-box>
+
+        <a-circle material="color: #1e1820; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
+            geometry="radius: 5; thetaLength: 460; segments: 360;" position="0 0.01641 0"></a-circle>
+        <a-circle material="color: #0c732b; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
+            geometry="radius: 20; thetaLength: 460; segments: 360;" position=""></a-circle>
+
+
+
+        <a-entity class="border" scale=".9 .9 .9">
+            <a-entity rotation="0 0 0">
+                <a-entity position="1.84208 0 0" scale="" rotation="">
+                    <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                        rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B" radius="5"
+                        material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                </a-entity>
+
+                <a-entity position="-0.3363 0 -1.18225" scale="" rotation="0 90 0">
+                    <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                        rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B" radius="5"
+                        material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                </a-entity>
+
+                <a-entity position="-0.3363 0 2.02192" scale="" rotation="0 -90 0">
+                    <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                        rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B" radius="5"
+                        material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                </a-entity>
+
+                <a-entity position="-1.83806 0 0" scale="" rotation="0 -180 0">
+                    <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                        rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B" radius="5"
+                        material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                </a-entity>
+
+            </a-entity>
+
+            <a-entity rotation="0 -20 0">
+                <a-entity position="1.84208 0 0" scale="" rotation="">
+                    <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                        rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B" radius="5"
+                        material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                </a-entity>
+
+                <a-entity position="-0.3363 0 -1.18225" scale="" rotation="0 90 0">
+                    <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                        rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B" radius="5"
+                        material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                </a-entity>
+
+                <a-entity position="-0.3363 0 2.02192" scale="" rotation="0 -90 0">
+                    <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                        rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B" radius="5"
+                        material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                </a-entity>
+
+                <a-entity position="-1.83806 0 0" scale="" rotation="0 -180 0">
+                    <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                        rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B" radius="5"
+                        material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                </a-entity>
+
+            </a-entity>
+
+
+
+            <a-entity rotation="0 25 0">
+                <a-entity position="1.84208 0 0" scale="" rotation="">
+                    <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                        rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B" radius="5"
+                        material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                </a-entity>
+
+                <a-entity position="-0.3363 0 -1.18225" scale="" rotation="0 90 0">
+                    <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                        rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B" radius="5"
+                        material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                </a-entity>
+
+                <a-entity position="-0.3363 0 2.02192" scale="" rotation="0 -90 0">
+                    <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                        rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B" radius="5"
+                        material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                </a-entity>
+
+                <a-entity position="-1.83806 0 0" scale="" rotation="0 -180 0">
+                    <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                        rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B" radius="5"
+                        material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                </a-entity>
+
+            </a-entity>
+            <a-entity rotation="0 45 0">
+                <a-entity position="1.84208 0 0" scale="" rotation="">
+                    <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                        rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B" radius="5"
+                        material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                    <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                        rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                        material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                </a-entity>
+                <a-entity rotation="0 0 0">
+                    <a-entity position="1.84208 0 0" scale="" rotation="">
+                        <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                            rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B"
+                            radius="5" material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    </a-entity>
+
+                    <a-entity position="-0.3363 0 -1.18225" scale="" rotation="0 90 0">
+                        <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                            rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B"
+                            radius="5" material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    </a-entity>
+
+                    <a-entity position="-0.3363 0 2.02192" scale="" rotation="0 -90 0">
+                        <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                            rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B"
+                            radius="5" material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    </a-entity>
+
+                    <a-entity position="-1.83806 0 0" scale="" rotation="0 -180 0">
+                        <a-octahedron position="-23.0252 -1.13834 -1.55617" scale="0.24485 0.80568 -1.05351"
+                            rotation="-11.854496781256735 -3.823920324703114 3.735684824252967" color="#FF926B"
+                            radius="5" material="color: #b0b0b0" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-22.99455 -1.95149 5.79117" scale="0.24485 0.80568 -1.07516"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #ababab" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-21.99551 -1.47995 -5.46386" scale="0.24485 0.80568 -1.07516"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-22.37813 -0.15806 -2.01841" scale="0.05173 0.79176 -0.47677"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #949494" geometry="radius: 4.62"></a-octahedron>
+                        <a-octahedron position="-22.71333 1 1" scale="0.24485 0.80568 -1.07516"
+                            rotation="68.8947371177107 2.569142753366611 -171.68279260638528" color="#FF926B" radius="5"
+                            material="color: #686564" geometry="radius: 4.62"></a-octahedron>
+                    </a-entity>
+
+                </a-entity>
+
+            </a-entity>
+
+            <a-entity scale="1.1 1.1 1.1" rotation="0 60 0" class="bushes">
+                <a-entity rotation="0 0 0">
+                    <a-entity position="-16.27186 0 0" class="bush">
+                        <a-octahedron scale="" position="0 -0.11976 -0.69088" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="0 -0.1942 0.84069" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="" color="#FF926B" radius="5" material="color: #4ca540"
+                            geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                    </a-entity>
+                </a-entity>
+
+
+
+                <a-entity rotation="0 90 0">
+                    <a-entity position="-16.27186 0 0" class="bush">
+                        <a-octahedron scale="" position="0 -0.11976 -0.69088" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="0 -0.1942 0.84069" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="" color="#FF926B" radius="5" material="color: #4ca540"
+                            geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                    </a-entity>
+                </a-entity>
+
+                <a-entity rotation="0 45 0">
+                    <a-entity position="-16.27186 0 0" class="bush">
+                        <a-octahedron scale="" position="0 -0.11976 -0.69088" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="0 -0.1942 0.84069" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="" color="#FF926B" radius="5" material="color: #4ca540"
+                            geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                    </a-entity>
+                </a-entity>
+
+                <a-entity rotation="0 -120 0">
+                    <a-entity position="-16.27186 0 0" class="bush">
+                        <a-octahedron scale="" position="0 -0.11976 -0.69088" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="0 -0.1942 0.84069" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="" color="#FF926B" radius="5" material="color: #4ca540"
+                            geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                    </a-entity>
+                </a-entity>
+
+                <a-entity rotation="0 -45 0">
+                    <a-entity position="-16.27186 0 0" class="bush">
+                        <a-octahedron scale="" position="0 -0.11976 -0.69088" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="0 -0.1942 0.84069" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="" color="#FF926B" radius="5" material="color: #4ca540"
+                            geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                    </a-entity>
+                </a-entity>
+
+                <a-entity rotation="0 -180 0">
+                    <a-entity position="-16.27186 0 0" class="bush">
+                        <a-octahedron scale="" position="0 -0.11976 -0.69088" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="0 -0.1942 0.84069" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="" color="#FF926B" radius="5" material="color: #4ca540"
+                            geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                    </a-entity>
+                </a-entity>
+
+            </a-entity>
+
+            <a-entity scale="1.1 1.1 1.1" rotation="0 20 0" class="bushes">
+                <a-entity rotation="0 0 0">
+                    <a-entity position="-16.27186 0 0" class="bush">
+                        <a-octahedron scale="" position="0 -0.11976 -0.69088" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="0 -0.1942 0.84069" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="" color="#FF926B" radius="5" material="color: #4ca540"
+                            geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                    </a-entity>
+                </a-entity>
+
+
+
+                <a-entity rotation="0 90 0">
+                    <a-entity position="-16.27186 0 0" class="bush">
+                        <a-octahedron scale="" position="0 -0.11976 -0.69088" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="0 -0.1942 0.84069" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="" color="#FF926B" radius="5" material="color: #4ca540"
+                            geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                    </a-entity>
+                </a-entity>
+
+                <a-entity rotation="0 45 0">
+                    <a-entity position="-16.27186 0 0" class="bush">
+                        <a-octahedron scale="" position="0 -0.11976 -0.69088" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="0 -0.1942 0.84069" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="" color="#FF926B" radius="5" material="color: #4ca540"
+                            geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                    </a-entity>
+                </a-entity>
+
+                <a-entity rotation="0 -120 0">
+                    <a-entity position="-16.27186 0 0" class="bush">
+                        <a-octahedron scale="" position="0 -0.11976 -0.69088" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="0 -0.1942 0.84069" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="" color="#FF926B" radius="5" material="color: #4ca540"
+                            geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                    </a-entity>
+                </a-entity>
+
+                <a-entity rotation="0 -45 0">
+                    <a-entity position="-16.27186 0 0" class="bush">
+                        <a-octahedron scale="" position="0 -0.11976 -0.69088" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="0 -0.1942 0.84069" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="" color="#FF926B" radius="5" material="color: #4ca540"
+                            geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                    </a-entity>
+                </a-entity>
+
+                <a-entity rotation="0 -180 0">
+                    <a-entity position="-16.27186 0 0" class="bush">
+                        <a-octahedron scale="" position="0 -0.11976 -0.69088" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="0 -0.1942 0.84069" color="#FF926B" radius="5"
+                            material="color: #4ca540" geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                        <a-octahedron scale="" position="" color="#FF926B" radius="5" material="color: #4ca540"
+                            geometry="primitive: tetrahedron; radius: 0.8; detail: 2">
+                        </a-octahedron>
+                    </a-entity>
+                </a-entity>
+
+            </a-entity>
+
+            <a-entity id="group-trees">
+                <a-entity id="trees" position="">
+                    <a-entity id="1">
+
+                        <a-entity scale="1.5 1.5 1.5" static-body="shape:sphere; sphereRadius:1;"
+                            position="0 0 18.16492">
+                            <a-octahedron scale="" position="0 2.1652 0" color="#FF926B" radius="5"
+                                material="color: #4ca540" geometry="primitive: tetrahedron; radius: 1.11; detail: 2">
+                            </a-octahedron>
+                            <a-cone scale="" position="0 1.02975 0" radius-bottom="2" radius-top="0.5"
+                                material="color: #9c4b30"
+                                geometry="radiusBottom: 0.3; radiusTop: 0; height: 2; segmentsHeight: 5; segmentsRadial: 4">
+                            </a-cone>
+                        </a-entity>
+
+                    </a-entity>
+
+                    <a-entity id="2">
+                        <a-entity scale="1.5 1.5 1.5" static-body="shape:sphere; sphereRadius:1;"
+                            position="-18.87042 0 -0.07932">
+                            <a-octahedron scale="" position="0 2.1652 0" color="#FF926B" radius="5"
+                                material="color: #4ca540" geometry="primitive: tetrahedron; radius: 1.11; detail: 2">
+                            </a-octahedron>
+                            <a-cone scale="" position="0 1.02975 0" radius-bottom="2" radius-top="0.5"
+                                material="color: #9c4b30"
+                                geometry="radiusBottom: 0.3; radiusTop: 0; height: 2; segmentsHeight: 5; segmentsRadial: 4">
+                            </a-cone>
+                        </a-entity>
+
+                    </a-entity>
+
+                    <a-entity id="3">
+                        <a-entity scale="1.5 1.5 1.5" static-body="shape:sphere; sphereRadius:1;"
+                            position="17.64445 0 -0.14128">
+                            <a-octahedron scale="" position="0 2.1652 0" color="#FF926B" radius="5"
+                                material="color: #4ca540" geometry="primitive: tetrahedron; radius: 1.11; detail: 2">
+                            </a-octahedron>
+                            <a-cone scale="" position="0 1.02975 0" radius-bottom="2" radius-top="0.5"
+                                material="color: #9c4b30"
+                                geometry="radiusBottom: 0.3; radiusTop: 0; height: 2; segmentsHeight: 5; segmentsRadial: 4">
+                            </a-cone>
+                        </a-entity>
+                    </a-entity>
+
+                    <a-entity id="4">
+                        <a-entity scale="1.5 1.5 1.5" static-body="shape:sphere; sphereRadius:1;"
+                            position="0 0 -18.3363">
+                            <a-octahedron scale="" position="0 2.1652 0" color="#FF926B" radius="5"
+                                material="color: #4ca540" geometry="primitive: tetrahedron; radius: 1.11; detail: 2">
+                            </a-octahedron>
+                            <a-cone scale="" position="0 1.02975 0" radius-bottom="2" radius-top="0.5"
+                                material="color: #9c4b30"
+                                geometry="radiusBottom: 0.3; radiusTop: 0; height: 2; segmentsHeight: 5; segmentsRadial: 4">
+                            </a-cone>
+                        </a-entity>
+                    </a-entity>
+
+                </a-entity>
+
+                <a-entity id="trees" rotation="0 45 0">
+
+                    <a-entity id="1">
+                        <a-entity scale="1.5 1.5 1.5" static-body="shape:sphere; sphereRadius:1;"
+                            position="0 0 18.16492">
+                            <a-octahedron scale="" position="0 2.1652 0" color="#FF926B" radius="5"
+                                material="color: #4ca540" geometry="primitive: tetrahedron; radius: 1.11; detail: 2">
+                            </a-octahedron>
+                            <a-cone scale="" position="0 1.02975 0" radius-bottom="2" radius-top="0.5"
+                                material="color: #9c4b30"
+                                geometry="radiusBottom: 0.3; radiusTop: 0; height: 2; segmentsHeight: 5; segmentsRadial: 4">
+                            </a-cone>
+                        </a-entity>
+                    </a-entity>
+
+                    <a-entity id="2">
+                        <a-entity scale="1.5 1.5 1.5" static-body="shape:sphere; sphereRadius:1;"
+                            position="-18.87042 0 -0.07932">
+                            <a-octahedron scale="" position="0 2.1652 0" color="#FF926B" radius="5"
+                                material="color: #4ca540" geometry="primitive: tetrahedron; radius: 1.11; detail: 2">
+                            </a-octahedron>
+                            <a-cone scale="" position="0 1.02975 0" radius-bottom="2" radius-top="0.5"
+                                material="color: #9c4b30"
+                                geometry="radiusBottom: 0.3; radiusTop: 0; height: 2; segmentsHeight: 5; segmentsRadial: 4">
+                            </a-cone>
+                        </a-entity>
+
+                    </a-entity>
+
+                    <a-entity id="3">
+                        <a-entity scale="1.5 1.5 1.5" static-body="shape:sphere; sphereRadius:1;"
+                            position="17.64445 0 -0.14128">
+                            <a-octahedron scale="" position="0 2.1652 0" color="#FF926B" radius="5"
+                                material="color: #4ca540" geometry="primitive: tetrahedron; radius: 1.11; detail: 2">
+                            </a-octahedron>
+                            <a-cone scale="" position="0 1.02975 0" radius-bottom="2" radius-top="0.5"
+                                material="color: #9c4b30"
+                                geometry="radiusBottom: 0.3; radiusTop: 0; height: 2; segmentsHeight: 5; segmentsRadial: 4">
+                            </a-cone>
+                        </a-entity>
+
+                    </a-entity>
+
+                    <a-entity id="4">
+                        <a-entity scale="1.5 1.5 1.5" static-body="shape:sphere; sphereRadius:1;"
+                            position="0 0 -18.3363">
+                            <a-octahedron scale="" position="0 2.1652 0" color="#FF926B" radius="5"
+                                material="color: #4ca540" geometry="primitive: tetrahedron; radius: 1.11; detail: 2">
+                            </a-octahedron>
+                            <a-cone scale="" position="0 1.02975 0" radius-bottom="2" radius-top="0.5"
+                                material="color: #9c4b30"
+                                geometry="radiusBottom: 0.3; radiusTop: 0; height: 2; segmentsHeight: 5; segmentsRadial: 4">
+                            </a-cone>
+                        </a-entity>
+
+                    </a-entity>
+
+                </a-entity>
+            </a-entity>
+
+            <a-box static-body width=100 height=0.001 depth=100 visible="false"></a-box>
+
+            <a-entity visible="false" gltf-model="#nav-mesh" nav-mesh></a-entity>
+
+            <a-plane scale="10 10 1" visible="false" static-body position="0 -0.1 -20.08842" material=""
+                geometry="width: 4.24; segmentsHeight: 2; segmentsWidth: 2">
+            </a-plane>
+            <a-plane scale="10 10 1" visible="false" static-body position="0 -0.1 20.03864" material="side: double"
+                geometry="width: 4.24; segmentsHeight: 2; segmentsWidth: 2">
+            </a-plane>
+            <a-plane scale="10 10 1" visible="false" static-body position="0 -0.1 21.44243" material="side: double"
+                geometry="width: 4.24; segmentsHeight: 2; segmentsWidth: 2">
+            </a-plane>
+            <a-plane scale="10 10 1" visible="false" static-body rotation="0 90 0" position="21.11783 -0.1 0.01573"
+                material="side: double" geometry="width: 4.24; segmentsHeight: 2; segmentsWidth: 2">
+            </a-plane>
+
+            <a-plane scale="99.84777 98.00598 1" rotation="-90 0 0" roughness="0.1" position="0 -0.1 0"
+                material="color: #030311; shader: flat" geometry=""></a-plane>
+            <a-sky radius="25" src="#sky" material="" geometry="" rotation="0 55.999999999999996 0"></a-sky>
+    </a-scene>
+
+    <script>
+
+        const ANIMATIONS = {
+            open: 'Open',
+            point: 'Point',
+            pointThumb: 'Point + Thumb',
+            fist: 'Fist',
+            hold: 'Hold',
+            thumbUp: 'Thumb Up'
+        };
+
+
+        const rHand = document.querySelector('.hand1');
+        const lHand = document.querySelector('.hand2');
+        const leftHandController = document.querySelector('#leftHand');
+        const rightHandController = document.querySelector('#rightHand');
+
+        leftHandController.addEventListener('pointup', (e) => handsAnimations(lHand, e, ANIMATIONS.hold));
+        rightHandController.addEventListener('pointup', (e) => handsAnimations(rHand, e, ANIMATIONS.hold));
+
+        leftHandController.addEventListener('pointdown', (e) => handsAnimations(lHand, e, ANIMATIONS.open));
+        rightHandController.addEventListener('pointdown', (e) => handsAnimations(rHand, e, ANIMATIONS.open));
+
+        leftHandController.addEventListener('pistolstart', (e) => handsAnimations(lHand, e, ANIMATIONS.thumbUp));
+        rightHandController.addEventListener('pistolstart', (e) => handsAnimations(rHand, e, ANIMATIONS.thumbUp));
+
+        leftHandController.addEventListener('pistolend', (e) => handsAnimations(lHand, e, ANIMATIONS.open));
+        rightHandController.addEventListener('pistolend', (e) => handsAnimations(rHand, e, ANIMATIONS.open));
+
+        leftHandController.addEventListener('pointingstart', (e) => handsAnimations(lHand, e, ANIMATIONS.point));
+        rightHandController.addEventListener('pointingstart', (e) => handsAnimations(rHand, e, ANIMATIONS.point));
+
+        leftHandController.addEventListener('pointingend', (e) => handsAnimations(lHand, e, ANIMATIONS.open));
+        rightHandController.addEventListener('pointingend', (e) => handsAnimations(rHand, e, ANIMATIONS.open));
+
+        leftHandController.addEventListener('gripdown', (e) => handsAnimations(lHand, e, ANIMATIONS.fist));
+        rightHandController.addEventListener('gripdown', (e) => handsAnimations(rHand, e, ANIMATIONS.fist));
+
+        leftHandController.addEventListener('gripup', (e) => handsAnimations(lHand, e, ANIMATIONS.open));
+        rightHandController.addEventListener('gripup', (e) => handsAnimations(rHand, e, ANIMATIONS.open));
+
+        const handsAnimations = (hand, e, state) => {
+            if (e) {
+
+                hand.setAttribute('animation-mixer', {
+                    clip: state
+                });
+                e.preventDefault()
+            }
+        };
+
+        NAF.schemas.add({
+            template: '#avatar-template',
+            components: [
+                'position',
+                'rotation',
+            ]
+        });
+
+        NAF.schemas.add({
+            template: '#rig-tmp',
+            components: [
+                'position',
+                'rotation',
+            ]
+        });
+
+        NAF.schemas.add({
+            template: '#rTemp',
+            components: [
+                'position',
+                'rotation',
+            ]
+        });
+
+        NAF.schemas.add({
+            template: '#lTemp',
+            components: [
+                'position',
+                'rotation',
+            ]
+        });
+
+        NAF.schemas.add({
+            template: '#handLeft',
+            components: [
+                'position',
+                'rotation',
+                'animation-mixer'
+            ]
+        });
+
+        NAF.schemas.add({
+            template: '#handRight',
+            components: [
+                'position',
+                'rotation',
+                'animation-mixer'
+            ]
+        });
+
+        NAF.schemas.add({
+            template: '#body',
+            components: [
+                'position',
+                'rotation'
+            ]
+        });
+
+        const onConnect = () => {
+            console.log("onConnect", new Date());
+        }
+    </script>
+</body>
+
+</html>
