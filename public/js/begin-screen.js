@@ -4,6 +4,9 @@ const dur = '500';
 
 AFRAME.registerComponent('start-event', {
     init: function() {
+        const privateButton = document.querySelector('.private');
+        const publicButton = document.querySelector('.public');
+
         const menu = document.querySelector('.menu');
         this.el.addEventListener('mouseleave', e => {
             this.el.setAttribute('animation',`property:scale; to:${buttonScale}; dur:${dur};`);
@@ -16,7 +19,8 @@ AFRAME.registerComponent('start-event', {
         this.el.addEventListener('click', e =>  {
             this.el.setAttribute('visible', 'false');
             menu.setAttribute('visible', 'true');
-
+            privateButton.classList.add('clickable');
+            publicButton.classList.add('clickable');
             this.el.parentNode.removeChild(this.el);
         })
     }

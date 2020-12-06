@@ -39,8 +39,8 @@
 
 
         <a-box class="clickable" visible="true" start-event animation scale="0.7 0.7 0.7"
-            position="-0.07899 1.813 -3.137" material="color: #5348ea" geometry="depth: 0.94; width: 1.96">
-            <a-text position="-0.66 0 0.52334" value="Go to a park!" text="">
+            position="-0.07899 1.813 -3.137" material="color: #5348ea" geometry="depth: 0.94; width: 2.96">
+            <a-text position="-1.0 0 0.52334" value="Look at me to begin!" text="">
             </a-text>
         </a-box>
 
@@ -64,13 +64,13 @@
 
         <a-entity class="menu" visible="false">
             <a-text position="-0.81911 3.55 -4.011" scale="" value="Choose a park" text=""></a-text>
-            <a-box public-park class="clickable" visible="" animation="" scale="0.7 0.7 0.7"
+            <a-box public-park class="public" visible="" animation="" scale="0.7 0.7 0.7"
                 position="-0.079 2.13958 -3.137" material="color: #ea7153" geometry="depth: 0.94; width: 2.96">
                 <a-text position="-1 0 0.523" value="Go to a public park!" text="">
                 </a-text>
             </a-box>
 
-            <a-box private-park class="clickable private" visible="" animation="" scale="0.7 0.7 0.7"
+            <a-box private-park class="private" visible="" animation="" scale="0.7 0.7 0.7"
                 position="-0.07899 1.22112 -3.137" material="color: #000000" geometry="depth: 0.94; width: 2.96">
                 <a-text position="-1 0 0.52334" value="Go to a private park!" text="">
                 </a-text>
@@ -79,9 +79,12 @@
 
 
         <a-entity class="portalsPublic" visible="false">
-            <a-link class="portal" rotation="0 0 0" position="0 1.4 -4.011" href="secondroom.html" image="#thumbnail" title="Public room 2"></a-link>
-            <a-link class="portal" rotation="0 0 0" position="-3 1.4 -4.011" href="firstroom.html" image="#thumbnail" title="Public room 1"></a-link>
-            <a-link class="portal" rotation="0 0 0" position="3 1.4 -4.011" href="thirdroom.html" image="#thumbnail" title="Public room 3"></a-link>
+            <a-link class="portal" rotation="0 0 0" position="0 1.4 -4.011" href="secondroom.html" image="#thumbnail"
+                title="Public room 2"></a-link>
+            <a-link class="portal" rotation="0 0 0" position="-3 1.4 -4.011" href="firstroom.html" image="#thumbnail"
+                title="Public room 1"></a-link>
+            <a-link class="portal" rotation="0 0 0" position="3 1.4 -4.011" href="thirdroom.html" image="#thumbnail"
+                title="Public room 3"></a-link>
         </a-entity>
 
         <a-entity position="2.3638 0 -10.19236" rotation="" id="pool">
