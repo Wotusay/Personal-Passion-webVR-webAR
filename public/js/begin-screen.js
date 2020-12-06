@@ -5,6 +5,7 @@ const buttonColor = '#000000';
 const butttonRecolor = "#5348ea";
 const reCollorAll = "#2f2d2d";
 let codeKey = '';
+let codes = [];
 
 AFRAME.registerComponent('start-event', {
     init: function() {
@@ -148,6 +149,7 @@ AFRAME.registerComponent('numpad', {
     init: function(){
         const numpadButons = document.querySelectorAll('.numpad');
         const inputField = document.querySelector('.input_field');
+        const submitButton = document.querySelector('.enter');
 
         this.el.addEventListener('mouseleave', e => {
             this.el.setAttribute('animation',`property:color; to:${buttonColor}; dur:${dur};`);
@@ -169,6 +171,21 @@ AFRAME.registerComponent('numpad', {
                     setTimeout(function() {
                         numpadButton.setAttribute('animation__done', `property:color; to:${reCollorAll}; dur:${dur};`);
                     }, 500);
+                });
+
+                submitButton.setAttribute('animation',`property:color; to:${buttonColor}; dur:${dur};`);
+                submitButton.classList.add('clickable');
+
+                submitButton.addEventListener('mouseleave', e => {
+                    submitButton.setAttribute('animation',`property:color; to:${buttonColor}; dur:${dur};`);
+                });
+        
+                submitButton.addEventListener('mouseenter', e => {
+                    submitButton.setAttribute('animation',`property:color; to:${butttonRecolor}; dur:${dur};`);
+                });
+
+                submitButton.addEventListener('click', e => {
+
                 });
 
             };
