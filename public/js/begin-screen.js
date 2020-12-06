@@ -3,6 +3,7 @@ const buttonUpScale = "0.9 0.9 0.9";
 const dur = '500';
 const buttonColor = '#000000';
 const butttonRecolor = "#5348ea";
+const reCollorAll = "#2f2d2d";
 let codeKey = '';
 
 AFRAME.registerComponent('start-event', {
@@ -151,11 +152,12 @@ AFRAME.registerComponent('numpad', {
         this.el.addEventListener('mouseleave', e => {
             this.el.setAttribute('animation',`property:color; to:${buttonColor}; dur:${dur};`);
 
-        })
+        });
+
         this.el.addEventListener('mouseenter', e => {
             this.el.setAttribute('animation',`property:color; to:${butttonRecolor}; dur:${dur};`);
- 
-        })
+        });
+
         this.el.addEventListener('click', e => {
             codeKey += this.el.id;
 
@@ -164,7 +166,11 @@ AFRAME.registerComponent('numpad', {
             if(codeKey.length === 3) {
                 numpadButons.forEach(numpadButton => {
                     numpadButton.classList.remove('clickable');
+                    setTimeout(function() {
+                        numpadButton.setAttribute('animation__done', `property:color; to:${reCollorAll}; dur:${dur};`);
+                    }, 500);
                 });
+
             };
             return codeKey;
         });
