@@ -24,13 +24,8 @@
 </head>
 
 <body>
-    <a-scene light="defaultLightsEnabled: false" private-room networked-scene="
-    app: myApp;
-    room: code;
-    debug: false;
-    adapter: webrtc;
-    audio: true;
-    " physics fog="color:  #e0e1db;  far:  40;  near:  0;  density:  0">
+    <a-scene private-room light="defaultLightsEnabled: false"
+  physics fog="color:  #e0e1db;  far:  40;  near:  0;  density:  0">
         <a-assets>
             <audio id="birds" src="./sounds/birds.mp3"></audio>
             <img id="sky" src="./textures/sky/kk.jpg" />
@@ -80,13 +75,13 @@
             </template>
 
             <template id="handLeft">
-                <a-entity random-color gltf-model="#hand2">
+                <a-entity gltf-model="#hand2">
                 </a-entity>
             </template>
 
 
             <template id="handRight">
-                <a-entity random-color gltf-model="#hand1">
+                <a-entity gltf-model="#hand1">
                 </a-entity>
             </template>
         </a-assets>
