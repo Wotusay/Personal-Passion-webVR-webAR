@@ -145,6 +145,17 @@ AFRAME.registerComponent('join-menu', {
     }
 });
 
+const replaceUrlParam = (url, paramName, paramValue) => {
+    if(paramValue == null)
+        paramValue = '';
+    url = url.replace(/\?$/,'');
+    const pattern = new RegExp('\\b('+paramName+'=).*?(&|$)')
+    if(url.search(pattern)>=0){
+        return url.replace(pattern,'$1' + paramValue + '$2');
+    }
+    return url + (url.indexOf('?')>0 ? '&' : '?') + paramName + '=' + paramValue 
+};
+
 AFRAME.registerComponent('numpad', {
     init: function(){
         const numpadButons = document.querySelectorAll('.numpad');
@@ -166,6 +177,8 @@ AFRAME.registerComponent('numpad', {
             inputField.setAttribute('value', codeKey);
 
             if(codeKey.length === 3) {
+                codes.push(codeKey);
+
                 numpadButons.forEach(numpadButton => {
                     numpadButton.classList.remove('clickable');
                     setTimeout(function() {
@@ -185,7 +198,11 @@ AFRAME.registerComponent('numpad', {
                 });
 
                 submitButton.addEventListener('click', e => {
+                    console.log(window.location.pathname) 
 
+                    const url = window.location.href + 'privateroom.html';
+
+                    window.location.href = replaceUrlParam(url,'code',codeKey);
                 });
 
             };
