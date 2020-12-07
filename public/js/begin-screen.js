@@ -37,6 +37,7 @@ AFRAME.registerComponent('public-park', {
         const portalsHtml = document.querySelector('.portalsPublic');
         const portals = portalsHtml.getElementsByClassName('portal');
         const privateButton = document.querySelector('.private')
+        const backButton = document.querySelector('.back');
 
         this.el.addEventListener('mouseleave', e => {
             this.el.setAttribute('animation',`property:scale; to:${buttonScale}; dur:${dur};`);
@@ -54,6 +55,9 @@ AFRAME.registerComponent('public-park', {
             portals[2].classList.add('clickable');
             this.el.classList.remove('clickable');
             privateButton.classList.remove('clickable')
+
+            backButton.setAttribute('visible', 'true');
+            backButton.classList.add('clickable');
         })
     }
 });
@@ -62,10 +66,9 @@ AFRAME.registerComponent('private-park', {
     init: function(){
         const publicButton = document.querySelector('.public');
         const menu = document.querySelector('.menu');
-
         const createMenu = document.querySelector('.create_menu');
-
         const numpadButons = document.querySelectorAll('.numpad');
+        const backButton = document.querySelector('.back');
 
         this.el.addEventListener('mouseleave', e => {
             this.el.setAttribute('animation',`property:scale; to:${buttonScale}; dur:${dur};`);
@@ -83,6 +86,9 @@ AFRAME.registerComponent('private-park', {
             numpadButons.forEach(numpad => {
                 numpad.classList.add('clickable');
             });
+
+            backButton.setAttribute('visible', 'true');
+            backButton.classList.add('clickable');
 
         })
     }
@@ -157,14 +163,48 @@ AFRAME.registerComponent('numpad', {
 
 AFRAME.registerComponent('back', {
     init: function(){
+        // Private room
+        const numpadButons = document.querySelectorAll('.numpad');
+        const createMenu = document.querySelector('.create_menu');
+
+        // Menu
+        const menu = document.querySelector('.menu');
+        const privateButton = document.querySelector('.private');
+        const publicButton = document.querySelector('.public');
+
+        // Public room
+        const portalsHtml = document.querySelector('.portalsPublic');
+        const portals = document.querySelectorAll('.portal');
+
         this.el.addEventListener('mouseleave', e => {
-            this.el.setAttribute('animation',`property:scale; to:${buttonScale}; dur:${dur};`);
-        })
+            this.el.setAttribute('animation',`property:scale; to:0.5 0.5 0.5; dur:${dur};`);
+        });
         this.el.addEventListener('mouseenter', e => {
-            this.el.setAttribute('animation',`property:scale; to:${buttonUpScale}; dur:${dur};`); 
-        })
+            this.el.setAttribute('animation',`property:scale; to:${buttonScale}; dur:${dur};`); 
+        });
+
         this.el.addEventListener('click', e => {
-            
+            this.el.classList.remove('clickable');
+            this.el.setAttribute('visible', 'false');
+
+            if (createMenu.getAttribute('visible')) {
+                numpadButons.forEach(numpad => {
+                    numpad.classList.remove('clickable');
+                });
+                createMenu.setAttribute('visible', 'false');
+            };
+
+            if (portalsHtml.getAttribute('visible')) {
+                portals.forEach(protal => {
+                    protal.classList.remove('clickable');
+                });
+                portalsHtml.setAttribute('visible', 'false');
+            };
+
+            menu.setAttribute('visible', 'true');
+            privateButton.classList.add('clickable');
+            publicButton.classList.add('clickable');
+
         })
     }
 });

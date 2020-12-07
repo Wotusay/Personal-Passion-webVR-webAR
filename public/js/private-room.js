@@ -25,7 +25,10 @@ AFRAME.registerComponent('private-room', {
 
         if(!params.code) {
             window.history.back(); 
-        }
-        el.setAttribute('networked-scene', `app: myApp; room: ${params.code}; debug: false; adapter: webrtc; audio: true;`);
+        };
+
+        const networkedSettings = `app: myApp; room: ${params.code}; debug: false; adapter: webrtc; audio: true;`;
+
+        el.setAttribute('networked-scene', networkedSettings );
     }
 });

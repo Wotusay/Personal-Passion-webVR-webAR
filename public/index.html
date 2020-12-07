@@ -37,6 +37,11 @@
             </a-entity>
         </a-entity>
 
+        <a-box visible='false' back class="back" position="-1.56926 2.93223 -3.42944" color="#0057fa"
+            geometry="depth: 0.94; width: 1.45" scale="0.5 0.5 0.5" material="">
+            <a-text position="-0.42992 0 0.5" value="Go back" text=""></a-text>
+        </a-box>
+
 
         <a-box class="clickable" visible="true" start-event animation scale="0.7 0.7 0.7"
             position="-0.07899 1.813 -3.137" material="color: #5348ea" geometry="depth: 0.94; width: 2.96">
@@ -76,10 +81,10 @@
                 </a-text>
             </a-box>
         </a-entity>
-        
+
         <a-entity class="create_menu" visible="false" scale="0.5 0.5 0.5" position="0 0 -1 " create-menu
             class="create_menu">
-            <a-box geometry="width:2.96" color="white" position="0 3.8 -2.5" scale="1 1 1">
+            <a-text position="-1.20777 4.55587 -1.22229" scale="" value="Create/Join a private lobby!" text=""></a-text>            <a-box geometry="width:2.96" color="white" position="0 3.8 -2.5" scale="1 1 1">
                 <a-text class="input_field" color="#000000" position="-1.1 0 0.5" value="Your code..."></a-text>
             </a-box>
             <a-box class="numpad" numpad id="1" color="#000000" position="-1.5 2.6 -2.5" scale="1 1 1">
@@ -92,8 +97,7 @@
                 <a-text position="-0.1 0 0.5" value="3"></a-text>
             </a-box>
 
-            <a-box class="enter" color="#2f2d2d" position="1.45174 3.8 -2.08902" material=""
-                geometry="depth: 0.49">
+            <a-box class="enter" color="#2f2d2d" position="1.45174 3.8 -2.08902" material="" geometry="depth: 0.49">
                 <a-text position="-0.19611 0.011 0.503" value="Go!" text=""></a-text>
             </a-box>
 
