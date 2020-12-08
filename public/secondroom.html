@@ -17,10 +17,10 @@
     <script>window.NAF || document.write('<script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js">\x3C/script>')</script>
     <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.min.js"></script>
-    <script src="https://unpkg.com/aframe-ambisonic-component"></script>
-    <script src="./js/hit.js"> </script>
+    <script src="./js/hit.js"></script>
+    <script src="https://rawgit.com/protyze/aframe-physics-lerp-component/master/dist/aframe-physics-lerp-component.min.js"></script>
     <script src="./js/dynamic-room.js"></script>
-    <script src="./js/spawn-in-circle.js" ></script>
+    <script src="./js/spawn-in-circle.js"></script>
 </head>
 
 <body>
@@ -33,65 +33,62 @@
     " physics fog="color:  #e0e1db;  far:  40;  near:  0;  density:  0">
         <a-assets>
             <audio id="birds" src="./sounds/birds.mp3"></audio>
-            <img id="sky" src="./textures/sky/kk.jpg"/>
-            <img id="ball" src="./textures/ball/balldimpled.png"/>
-            <img id="hoop" src="./textures/ball/test.jpg"/>
-            <img id="box" src="./textures/ball/box.jpg"/>
-            <a-asset id="hand1" src="./textures/hands/rightHandHigh.glb"/>
-                <a-asset id="hand2" src="./textures/hands/leftHandHigh.glb"/>
+            <img id="sky" src="./textures/sky/kk.jpg" />
+            <img id="ball" src="./textures/ball/balldimpled.png" />
+            <img id="hoop" src="./textures/ball/test.jpg" />
+            <img id="box" src="./textures/ball/box.jpg" />
+            <a-asset id="hand1" src="./textures/hands/rightHandHigh.glb" />
+            <a-asset id="hand2" src="./textures/hands/leftHandHigh.glb" />
 
-                    <a-asset id="tree" src="textures/tree/scene.gltf"/>
-                        <a-asset id="nav-mesh" src="textures/navmesh/navmesh.gltf"/>
+            <a-asset id="tree" src="textures/tree/scene.gltf" />
+            <a-asset id="nav-mesh" src="textures/navmesh/navmesh.gltf" />
 
-                            <template id="avatar-template">
-                                <a-entity position="0 1.6 0" scale="0.5 0.5 0.5" class="avatar" networked-audio-source>
-                                    <a-box random-color="" class="head" color="#ffffff" scale="0.65927 0.68061 0.56324"
-                                        material="color: #30612f" geometry=""></a-box>
-                                    <a-entity class="face" position="0 0.05 0">
-                                        <a-sphere class="eye" color="#efefef" position="0.16 0.1 -0.35"
-                                            scale="0.12 0.12 0.12">
-                                            <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2">
-                                            </a-sphere>
-                                        </a-sphere>
-                                        <a-sphere class="eye" color="#efefef" position="-0.16 0.1 -0.35"
-                                            scale="0.12 0.12 0.12">
-                                            <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2">
-                                            </a-sphere>
-                                        </a-sphere>
-                                    </a-entity>
-                            </template>
+            <template id="avatar-template">
+                <a-entity position="0 1.6 0" scale="0.5 0.5 0.5" class="avatar" networked-audio-source>
+                    <a-box random-color="" class="head" color="#ffffff" scale="0.65927 0.68061 0.56324"
+                        material="color: #30612f" geometry=""></a-box>
+                    <a-entity class="face" position="0 0.05 0">
+                        <a-sphere class="eye" color="#efefef" position="0.16 0.1 -0.35" scale="0.12 0.12 0.12">
+                            <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2">
+                            </a-sphere>
+                        </a-sphere>
+                        <a-sphere class="eye" color="#efefef" position="-0.16 0.1 -0.35" scale="0.12 0.12 0.12">
+                            <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2">
+                            </a-sphere>
+                        </a-sphere>
+                    </a-entity>
+            </template>
 
-                            <template id="rig-tmp">
-                                <a-entity spawn-in-circle="radius:2" id="rig"></a-entity>
-                            </template>
+            <template id="rig-tmp">
+                <a-entity spawn-in-circle="radius:2" id="rig"></a-entity>
+            </template>
 
-                            <template id="body">
-                                <a-box random-color="" rotation="0 0 0" position="0 0.922 0"
-                                    scale="0.27923 0.905 0.26213" material="color: #828c20"
-                                    geometry="segmentsHeight: 5; segmentsWidth: 20; segmentsDepth: 5">
-                                </a-box>
-                            </template>
+            <template id="body">
+                <a-box random-color="" rotation="0 0 0" position="0 0.922 0" scale="0.27923 0.905 0.26213"
+                    material="color: #828c20" geometry="segmentsHeight: 5; segmentsWidth: 20; segmentsDepth: 5">
+                </a-box>
+            </template>
 
-                            <template id="rTemp">
-                                <a-entity rotation="0 0 0 " position="-1 -10 -1">
-                                </a-entity>
-                            </template>
+            <template id="rTemp">
+                <a-entity rotation="0 0 0 " position="-1 -10 -1">
+                </a-entity>
+            </template>
 
-                            <template id="lTemp">
-                                <a-entity rotaion="0 0 0" position="-1 -10 -1">
-                                </a-entity>
-                            </template>
+            <template id="lTemp">
+                <a-entity rotaion="0 0 0" position="-1 -10 -1">
+                </a-entity>
+            </template>
 
-                            <template id="handLeft">
-                                <a-entity  gltf-model="#hand2">
-                                </a-entity>
-                            </template>
+            <template id="handLeft">
+                <a-entity gltf-model="#hand2">
+                </a-entity>
+            </template>
 
 
-                            <template id="handRight">
-                                <a-entity gltf-model="#hand1">
-                                </a-entity>
-                            </template>
+            <template id="handRight">
+                <a-entity gltf-model="#hand1">
+                </a-entity>
+            </template>
         </a-assets>
         <a-entity light="type: ambient; color: #BBB"></a-entity>
         <a-entity light="type: directional; color: #fbd723; intensity: 0.6" position="-0.5 1 1"></a-entity>
@@ -150,9 +147,10 @@
                 geometry="radius: 0.5; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
         </a-entity>
 
-        <a-entity id="duck" scale="0.1 0.1 0.1" position="5.29536 0.02532 -10.1826" rotation="0 0 0" animation="property: rotation; to: 0 360 0; dur:3000; easing: linear; loop:true;">
+        <a-entity id="duck" scale="0.1 0.1 0.1" position="5.29536 0.02532 -10.1826" rotation="0 0 0"
+            animation="property: rotation; to: 0 360 0; dur:3000; easing: linear; loop:true;">
             <a-box position=" -1.47366 1.28076 0" scale="0.49903 0.1551 0.5785" material="color: #ec8046"
-            geometry="segmentsWidth: 10">
+                geometry="segmentsWidth: 10">
             </a-box>
             <a-sphere position="0 0.6314 0" scale="1.41085 0.8619 1" rotation="" material="color: #c7c954"
                 geometry="radius: 0.81; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>

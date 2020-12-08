@@ -25,17 +25,16 @@
         <a-entity light="type: directional; color: #346579; intensity: 0.3" position="0.5 1 1"></a-entity>
         <a-entity light="color: #241405; intensity: 0.26" position="1.5 1 1"></a-entity>
 
-        <a-entity position="0 1.6 0">
-            <a-entity camera look-controls wasd-controls-enabled="false" mouse-cursor>
-                <a-entity scale="1 1 1" cursor="fuse: true; maxDistance: 30; timeout: 500" position="0 0 -1"
-                    geometry="primitive:  ring;  radiusInner:  0.01;  radiusOuter:  0.02"
-                    material="color: white; shader: flat" raycaster="objects: .clickable"
-                    animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
-                    animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
-                    animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1">
-                </a-entity>
+        <a-entity position="0 1.6 0" camera look-controls wasd-controls-enabled="false">
+            <a-entity scale="1 1 1" cursor="fuse: true; maxDistance: 30; timeout: 500" position="0 0 -1"
+                geometry="primitive:  ring;  radiusInner:  0.01;  radiusOuter:  0.02"
+                material="color: white; shader: flat" raycaster="objects: .clickable"
+                animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
+                animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
+                animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1">
             </a-entity>
         </a-entity>
+
 
         <a-box rotation="30 0 0" visible="false" back class="back" position="0.05119 3.48918 -3.42944" color="#0057fa"
             geometry="depth: 0.94; width: 1.45" scale="0.5 0.5 0.5" material="">
@@ -48,25 +47,7 @@
             <a-text position="-1.0 0 0.52334" value="Look at me to begin!" text="">
             </a-text>
         </a-box>
-
-
-        <a-entity id="duck" scale="0.5 0.5 0.5" position="3.08256 0.02532 2.68012" rotation="0 -75 0">
-            <a-box position="-1.47366 1.28076 0" scale="0.49903 0.1551 0.5785" material="color: #ec8046"
-                geometry="segmentsWidth: 10">
-            </a-box>
-            <a-sphere position="0 0.6314 0" scale="1.41085 0.8619 1" rotation="" material="color: #c7c954"
-                geometry="radius: 0.81; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
-
-            <a-sphere position="-1.0529 1.55047 -0.48445" scale="1.01542 1.03442 1" rotation=""
-                material="color: #0a0a0a" geometry="radius: 0.09; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
-
-            <a-sphere position="-1.0529 1.55047 0.4601" scale="1.01542 1.03442 1" rotation="" material="color: #0a0a0a"
-                geometry="radius: 0.09; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
-
-            <a-sphere position="-0.99081 1.31257 0" scale="1.01542 1.03442 1" rotation="" material="color: #c7c954"
-                geometry="radius: 0.5; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
-        </a-entity>
-
+        
         <a-entity class="menu" visible="false">
             <a-text position="-0.81911 3.55 -4.011" scale="" value="Choose a park" text=""></a-text>
             <a-box public-park class="public" visible="" animation="" scale="0.7 0.7 0.7"
@@ -98,7 +79,7 @@
                 <a-text position="-0.1 0 0.5" value="3"></a-text>
             </a-box>
 
-            <a-box class="enter" color="#2f2d2d" position="1.45174 3.8 -2.08902" material="" geometry="depth: 0.49">
+            <a-box class="enter" color="#2f2d2d" position="1.45174 3.79 -2.08902" material="" geometry="depth: 0.39">
                 <a-text position="-0.19611 0.011 0.503" value="Go!" text=""></a-text>
             </a-box>
 
