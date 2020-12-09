@@ -24,8 +24,8 @@
 </head>
 
 <body>
-    <a-scene private-room light="defaultLightsEnabled: false"
-  physics fog="color:  #e0e1db;  far:  40;  near:  0;  density:  0">
+    <a-scene private-room light="defaultLightsEnabled: false" physics
+        fog="color:  #e0e1db;  far:  40;  near:  0;  density:  0">
         <a-assets>
             <audio id="birds" src="./sounds/birds.mp3"></audio>
             <img id="sky" src="./textures/sky/kk.jpg" />
@@ -34,24 +34,14 @@
             <img id="box" src="./textures/ball/box.jpg" />
             <a-asset id="hand1" src="./textures/hands/rightHandHigh.glb" />
             <a-asset id="hand2" src="./textures/hands/leftHandHigh.glb" />
+            <a-asset id="player-head" src="./textures/head/head.gltf" />
 
             <a-asset id="tree" src="textures/tree/scene.gltf" />
             <a-asset id="nav-mesh" src="textures/navmesh/navmesh.gltf" />
 
             <template id="avatar-template">
                 <a-entity position="0 1.6 0" scale="0.5 0.5 0.5" class="avatar" networked-audio-source>
-                    <a-box random-color="" class="head" color="#ffffff" scale="0.65927 0.68061 0.56324"
-                        material="color: #30612f" geometry=""></a-box>
-                    <a-entity class="face" position="0 0.05 0">
-                        <a-sphere class="eye" color="#efefef" position="0.16 0.1 -0.35" scale="0.12 0.12 0.12">
-                            <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2">
-                            </a-sphere>
-                        </a-sphere>
-                        <a-sphere class="eye" color="#efefef" position="-0.16 0.1 -0.35" scale="0.12 0.12 0.12">
-                            <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2">
-                            </a-sphere>
-                        </a-sphere>
-                    </a-entity>
+                    <a-gltf-model scale="0.5 0.5 0.5" position="0 -1.6 0" rotation="0 -180 0" src="#player-head"></a-gltf-model>
             </template>
 
             <template id="rig-tmp">
