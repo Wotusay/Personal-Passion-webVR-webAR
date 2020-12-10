@@ -49,6 +49,7 @@
                 <a-entity position="0 1.6 0" scale="0.5 0.5 0.5" class="avatar" networked-audio-source>
                     <a-gltf-model scale="0.5 0.5 0.5" position="0 -1.6 0" rotation="0 -180 0" src="#player-head">
                     </a-gltf-model>
+                </a-entity>
             </template>
 
             <template id="rig-tmp">
@@ -56,9 +57,8 @@
             </template>
 
             <template id="body">
-                <a-box random-color="" rotation="0 0 0" position="0 0.922 0" scale="0.27923 0.905 0.26213"
-                    material="color: #828c20" geometry="segmentsHeight: 5; segmentsWidth: 20; segmentsDepth: 5">
-                </a-box>
+                <a-gltf-model scale="0.5 0.5 0.5" position="0 0.922 0" rotation="0 0 0" src="#player-body">
+                </a-gltf-model>
             </template>
 
             <template id="rTemp">
