@@ -21,10 +21,12 @@
     <script src="./js/hit.js"> </script>
     <script src="./js/private-room.js"></script>
     <script src="./js/spawn-in-circle.js"></script>
+    <script src="./js/random-model.js"></script>
+
 </head>
 
 <body>
-    <a-scene private-room light="defaultLightsEnabled: false" physics
+    <a-scene private-room random-model light="defaultLightsEnabled: false" physics
         fog="color:  #e0e1db;  far:  40;  near:  0;  density:  0">
         <a-assets>
             <audio id="birds" src="./sounds/birds.mp3"></audio>
@@ -43,7 +45,7 @@
 
             <template id="avatar-template">
                 <a-entity position="0 1.6 0" scale="0.5 0.5 0.5" class="avatar" networked-audio-source>
-                    <a-gltf-model scale="0.5 0.5 0.5" position="0 -1.6 0" rotation="0 -180 0" src="#player-head">
+                    <a-gltf-model class="randomHead" scale="0.5 0.5 0.5" position="0 -1.6 0" rotation="0 -180 0" src="#player-head">
                     </a-gltf-model>
                 </a-entity>
 
@@ -52,9 +54,9 @@
             <template id="rig-tmp">
                 <a-entity spawn-in-circle="radius:2" id="rig"></a-entity>
             </template>
-            
+
             <template id="body">
-                <a-gltf-model scale="0.44 0.5 0.46" position="0 0.17 0" rotation="0 0 0" src="#player-body">
+                <a-gltf-model class="randomBody" scale="0.44 0.5 0.46" position="0 0.17 0" rotation="0 0 0" src="#player-body">
                 </a-gltf-model>
             </template>
 
