@@ -59,9 +59,8 @@
             </template>
 
             <template id="body">
-                <a-box random-color="" rotation="0 0 0" position="0 0.922 0" scale="0.27923 0.905 0.26213"
-                    material="color: #828c20" geometry="segmentsHeight: 5; segmentsWidth: 20; segmentsDepth: 5">
-                </a-box>
+                <a-gltf-model scale="0.44 0.5 0.46" position="0 0.17 0" rotation="0 0 0" src="#player-body">
+                </a-gltf-model>
             </template>
 
             <template id="rTemp">
@@ -125,6 +124,7 @@
                     animation-mixer="loop:  once;  clip: Open; clampWhenFinished:  true">
                 </a-entity>
             </a-entity>
+
             <a-entity id="player" camera position="0 1.6 0" look-controls
                 networked="template:#avatar-template; attachTemplateToLocal:false;">
             </a-entity>
