@@ -13,21 +13,19 @@
     <script src="https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.min.js"></script>
     <script
         src="https://unpkg.com/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
-    <script src="/build.js"></script>
-    <script>window.NAF || document.write('<script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js">\x3C/script>')</script>
+
+    <script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.min.js"></script>
     <script src="./js/hit.js"> </script>
-    <script src="./js/dynamic-room.js"></script>
     <script src="./js/spawn-in-circle.js"></script>
     <script src="./js/random-model.js"></script>
-
 </head>
 
 <body>
-    <a-scene random-model light="defaultLightsEnabled: false" networked-scene="
+    <a-scene light="defaultLightsEnabled: false" networked-scene="
     app: myApp;
-    room: thirdpark;
+    room: thirdroom;
     debug:false;
     adapter: webrtc;
     audio: true;
@@ -43,16 +41,33 @@
 
             <a-asset id="tree" src="textures/tree/scene.gltf" />
             <a-asset id="nav-mesh" src="textures/navmesh/navmesh.gltf" />
+
+
             <a-asset id="player-head" src="./textures/head/head.gltf" />
             <a-asset id="player-body" src="./textures/body/body.gltf" />
+
+            <a-asset id="player-head-y" src="./textures/head/head-y.gltf" />
+            <a-asset id="player-body-y" src="./textures/body/body-y.gltf" />
+
+            <a-asset id="player-head-b" src="./textures/head/head-b.gltf" />
+            <a-asset id="player-body-b" src="./textures/body/body-b.gltf" />
+
+            <a-asset id="player-head-p" src="./textures/head/head-p.gltf" />
+            <a-asset id="player-body-p" src="./textures/body/body-p.gltf" />
+
+            <a-asset id="player-head-r" src="./textures/head/head-r.gltf" />
+            <a-asset id="player-body-r" src="./textures/body/body-r.gltf" />
+
+            <a-asset id="player-head-o" src="./textures/head/head-o.gltf" />
+            <a-asset id="player-body-o" src="./textures/body/body-o.gltf" />
 
 
             <template id="avatar-template">
                 <a-entity position="0 1.6 0" scale="0.5 0.5 0.5" class="avatar" networked-audio-source>
-                    <a-gltf-model class="randomHead" scale="0.5 0.5 0.5" position="0 -1.6 0" rotation="0 -180 0" src="#player-head">
+                    <a-gltf-model random-model class="randomHead" scale="0.5 0.5 0.5" position="0 -1.6 0"
+                        rotation="0 -180 0">
                     </a-gltf-model>
                 </a-entity>
-
             </template>
 
             <template id="rig-tmp">
@@ -60,7 +75,8 @@
             </template>
 
             <template id="body">
-                <a-gltf-model class="randomBody"  scale="0.44 0.5 0.46" position="0 0.17 0" rotation="0 0 0" src="#player-body">
+                <a-gltf-model random-model class="randomBody" scale="0.44 0.5 0.46" position="0 0.17 0"
+                    rotation="0 0 0">
                 </a-gltf-model>
             </template>
 
@@ -75,13 +91,13 @@
             </template>
 
             <template id="handLeft">
-                <a-entity gltf-model="#hand2">
+                <a-entity random-color gltf-model="#hand2">
                 </a-entity>
             </template>
 
 
             <template id="handRight">
-                <a-entity gltf-model="#hand1">
+                <a-entity random-color gltf-model="#hand1">
                 </a-entity>
             </template>
         </a-assets>
@@ -119,10 +135,11 @@
                 networked="template:#avatar-template; attachTemplateToLocal:false;">
             </a-entity>
 
-            <a-entity static-body position="0 0.9 0" rotation="0 0 0"
+            <a-entity static-body position="0 0.17 0" rotation="0 0 0"
                 networked="template:#body; attachTemplateToLocal:false;" visible="true">
             </a-entity>
         </a-entity>
+
 
         <a-entity id="duck" scale="0.1 0.1 0.1" position="4.08256 0.02532 -11.68012" rotation="0 0 0"
             animation="property: rotation; to: 0 360 0; dur:4000; easing: linear; loop:true;">

@@ -20,14 +20,13 @@
     <script src="./js/hit.js"></script>
     <script
         src="https://rawgit.com/protyze/aframe-physics-lerp-component/master/dist/aframe-physics-lerp-component.min.js"></script>
-    <script src="./js/dynamic-room.js"></script>
     <script src="./js/spawn-in-circle.js"></script>
     <script src="./js/random-model.js"></script>
 
 </head>
 
 <body>
-    <a-scene random-model light="defaultLightsEnabled: false" networked-scene="
+    <a-scene light="defaultLightsEnabled: false" networked-scene="
     app: myApp;
     room: secondpark;
     debug:false;
@@ -48,10 +47,25 @@
             <a-asset id="player-head" src="./textures/head/head.gltf" />
             <a-asset id="player-body" src="./textures/body/body.gltf" />
 
+            <a-asset id="player-head-y" src="./textures/head/head-y.gltf" />
+            <a-asset id="player-body-y" src="./textures/body/body-y.gltf" />
+
+            <a-asset id="player-head-b" src="./textures/head/head-b.gltf" />
+            <a-asset id="player-body-b" src="./textures/body/body-b.gltf" />
+
+            <a-asset id="player-head-p" src="./textures/head/head-p.gltf" />
+            <a-asset id="player-body-p" src="./textures/body/body-p.gltf" />
+
+            <a-asset id="player-head-r" src="./textures/head/head-r.gltf" />
+            <a-asset id="player-body-r" src="./textures/body/body-r.gltf" />
+
+            <a-asset id="player-head-o" src="./textures/head/head-o.gltf" />
+            <a-asset id="player-body-o" src="./textures/body/body-o.gltf" />
+
 
             <template id="avatar-template">
                 <a-entity position="0 1.6 0" scale="0.5 0.5 0.5" class="avatar" networked-audio-source>
-                    <a-gltf-model class="randomHead" scale="0.5 0.5 0.5" position="0 -1.6 0" rotation="0 -180 0" src="#player-head">
+                    <a-gltf-model class="randomHead" random-model scale="0.5 0.5 0.5" position="0 -1.6 0" rotation="0 -180 0" >
                     </a-gltf-model>
                 </a-entity>
             </template>
@@ -61,7 +75,7 @@
             </template>
 
             <template id="body">
-                <a-gltf-model class="randomBody"  scale="0.44 0.5 0.46" position="0 0.17 0" rotation="0 0 0" src="#player-body">
+                <a-gltf-model class="randomBody" random-model  scale="0.44 0.5 0.46" position="0 0.17 0" rotation="0 0 0">
                 </a-gltf-model>
             </template>
 
