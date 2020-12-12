@@ -40,19 +40,18 @@ AFRAME.registerComponent('add-boxes', {
         const activityBoardBoxes = document.querySelector('.progress__boxes');
 
         this.el.addEventListener('collisions', (e) => {
-                if (counter === 8 ){
-                    addText.setAttribute('value', 'Max boxes reached');
-                    activityBoardBoxes.setAttribute('color', `#10b240`);
-                    activityBoardBoxes.setAttribute('value', `Boxes placed: ${counter}/8`);
-                    return; 
-                } else {
-                    console.log(e);
-                    counter++;
-                    spawnBox();
-                    console.log(counter);
-                    activityBoardBoxes.setAttribute('value', `Boxes placed: ${counter}/8`);
-                }
-            });
-        }
-}
-);
+            if (counter === 8 ){
+                addText.setAttribute('value', 'Max boxes reached');
+                activityBoardBoxes.setAttribute('color', `#10b240`);
+                activityBoardBoxes.setAttribute('value', `Boxes placed: ${counter}/8`);
+                return; 
+            } else {
+                console.log(e);
+                counter++;
+                spawnBox();
+                console.log(counter);
+                activityBoardBoxes.setAttribute('value', `Boxes placed: ${counter}/8`);
+            }
+        });
+    }
+});
