@@ -44,7 +44,6 @@
             <a-asset id="tree" src="textures/tree/scene.gltf" />
             <a-asset id="nav-mesh" src="textures/navmesh/navmesh.gltf" />
 
-
             <a-asset id="player-head" src="./textures/head/head.gltf" />
             <a-asset id="player-body" src="./textures/body/body.gltf" />
 
@@ -62,7 +61,6 @@
 
             <a-asset id="player-head-o" src="./textures/head/head-o.gltf" />
             <a-asset id="player-body-o" src="./textures/body/body-o.gltf" />
-
 
             <template id="avatar-template">
                 <a-entity position="0 1.6 0" scale="0.5 0.5 0.5" class="avatar" networked-audio-source>
@@ -188,12 +186,12 @@
                 geometry="height: 0.14; radius: 1.39; segmentsHeight: 5; segmentsRadial: 10"></a-cylinder>
         </a-entity>
 
-        <a-entity id="boxes" add-boxes class="addboxes" position="-8.6237 0 0.07476" scale="" rotation="0 90 0">
-            <a-cylinder physics-collider static-body position="-0.0012 0.99543 0.00051" scale=""
+        <a-entity id="boxes" class="addboxes" position="-8.6237 0 0.07476" scale="" rotation="0 90 0">
+            <a-cylinder add-boxes physics-collider static-body position="-0.0012 0.99543 0.00051" scale=""
                 material="color: #2a27ec" geometry="height: 0.06; radius: 0.1; segmentsHeight: 16"></a-cylinder>
-            <a-box physics-collider static-body position="0 0.47642 0" scale="0.30548 1.02773 0.3009"
-                material="color: #404040" geometry=""></a-box>
-            <a-text position="-0.42052 1.18114 -0.12028" value="Add box" text=""></a-text>
+            <a-box static-body position="0 0.47642 0" scale="0.30548 1.02773 0.3009" material="color: #404040"
+                geometry=""></a-box>
+            <a-text class="add__button" position="-0.42052 1.18114 -0.12028" value="Add box" text=""></a-text>
         </a-entity>
 
         <a-torus position="11.76523 1.65725 -2.44058" scale="" rotation="90 0 0" material="color: #c87d28"
@@ -778,11 +776,13 @@
         <a-sphere class="ball2" src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.05; "
             position="13 1.25 -0.5" radius="0.14" mass="0.3"></a-sphere>
 
-        <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
-            position="-11.5 2.25 0" radius="0.50"></a-box>
-        <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
-            position="-11.5 0.25 0" radius="0.50"></a-box>
 
+        <a-entity class="allboxes">
+            <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
+                position="-11.5 2.25 0" radius="0.50"></a-box>
+            <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
+                position="-11.5 0.25 0" radius="0.50"></a-box>
+        </a-entity>
         <a-circle material="color: #1e1820; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
             geometry="radius: 5; thetaLength: 460; segments: 360;" position="0 0.01641 0"></a-circle>
         <a-circle material="color: #0c732b; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
