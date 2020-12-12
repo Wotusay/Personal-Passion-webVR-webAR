@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebVR - Wout Salembier</title>
+    <link rel="icon" type="image/png" href="textures/logo/favicon.png" />
+
     <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     <script
@@ -17,9 +19,9 @@
     <script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.min.js"></script>
-    <script src="./js/hit.js"> </script>
     <script src="./js/spawn-in-circle.js"></script>
     <script src="./js/random-model.js"></script>
+    <script src="./js/play-games.js"></script>
 </head>
 
 <body>
@@ -186,12 +188,12 @@
                 geometry="height: 0.14; radius: 1.39; segmentsHeight: 5; segmentsRadial: 10"></a-cylinder>
         </a-entity>
 
-        <a-entity id="boxes" class="addboxes" position="-8.6237 0 0.07476" scale="" rotation="0 90 0">
+        <a-entity id="boxes" add-boxes class="addboxes" position="-8.6237 0 0.07476" scale="" rotation="0 90 0">
             <a-cylinder physics-collider static-body position="-0.0012 0.99543 0.00051" scale=""
                 material="color: #2a27ec" geometry="height: 0.06; radius: 0.1; segmentsHeight: 16"></a-cylinder>
             <a-box physics-collider static-body position="0 0.47642 0" scale="0.30548 1.02773 0.3009"
                 material="color: #404040" geometry=""></a-box>
-            <a-text position="-0.30787 1.18114 -0.12028" value="Add box" text=""></a-text>
+            <a-text position="-0.42052 1.18114 -0.12028" value="Add box" text=""></a-text>
         </a-entity>
 
         <a-torus position="11.76523 1.65725 -2.44058" scale="" rotation="90 0 0" material="color: #c87d28"

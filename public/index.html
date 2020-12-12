@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VRHUB - Begin page</title>
+    <link rel="icon" type="image/png" href="textures/logo/favicon.png" />
     <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
     <script src="./js/begin-screen.js"></script>
@@ -15,8 +16,9 @@
     <a-scene fog="color:  #e0e1db;  far:  40;  near:  0;  density:  0" light="defaultLightsEnabled: false"
         vr-mode-ui="enabled: true">
         <a-assets>
-            <img id="sky" src="./textures/sky/kk.jpg">
-            <img id="thumbnail" src="./textures/thumnail/thumbnail.png">
+            <img id="sky" src="./textures/sky/kk.jpg" />
+            <img id="thumbnail" src="./textures/thumnail/thumbnail.png" />
+            <img id="logo" src="./textures/logo/logo.png" />
 
         </a-assets>
 
@@ -26,6 +28,7 @@
         <a-entity light="color: #241405; intensity: 0.26" position="1.5 1 1"></a-entity>
 
         <a-entity position="0 1.6 0" camera look-controls wasd-controls-enabled="false">
+
             <a-entity scale="1 1 1" cursor="fuse: true; maxDistance: 30; timeout: 500" position="0 0 -1"
                 geometry="primitive:  ring;  radiusInner:  0.01;  radiusOuter:  0.02"
                 material="color: white; shader: flat" raycaster="objects: .clickable"
@@ -34,6 +37,7 @@
                 animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1">
             </a-entity>
         </a-entity>
+
 
 
         <a-box rotation="30 0 0" visible="false" back class="back" position="0.05119 3.48918 -3.42944" color="#0057fa"
@@ -47,17 +51,17 @@
             <a-text position="-1.0 0 0.52334" value="Look at me to begin!" text="">
             </a-text>
         </a-box>
-        
+
         <a-entity class="menu" visible="false">
             <a-text position="-0.81911 3.55 -4.011" scale="" value="Choose a park" text=""></a-text>
             <a-box public-park class="public" visible="" animation="" scale="0.7 0.7 0.7"
-                position="-0.079 2.13958 -3.137" material="color: #ea7153" geometry="depth: 0.94; width: 2.96">
+                position="-0.079 2.13958 -3.137" material="color: #05992a" geometry="depth: 0.94; width: 2.96">
                 <a-text position="-1 0 0.523" value="Go to a public park!" text="">
                 </a-text>
             </a-box>
 
             <a-box private-park class="private" visible="" animation="" scale="0.7 0.7 0.7"
-                position="-0.07899 1.22112 -3.137" material="color: #000000" geometry="depth: 0.94; width: 2.96">
+                position="-0.07899 1.22112 -3.137" material="color: #186bf2" geometry="depth: 0.94; width: 2.96">
                 <a-text position="-1 0 0.52334" value="Go to a private park!" text="">
                 </a-text>
             </a-box>

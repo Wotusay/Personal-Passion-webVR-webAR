@@ -1,4 +1,4 @@
-
+// This is o get the code form the url.
 const getUrlParams = () =>{
     let match;
     let pl = /\+/g;  // Regex for replacing addition symbol with a space
@@ -17,7 +17,7 @@ const getUrlParams = () =>{
     return urlParams;
 };
 
-
+// Private room function.
 AFRAME.registerComponent('private-room', {
     init: function() {
         let el = this.el;
