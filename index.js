@@ -27,7 +27,7 @@ app.use(express.static('public'));
 
 
 // Start Express http server
-const webServer =  require(isDevelopment ? 'https' : 'http').Server(options, app);;
+const webServer =  require(isDevelopment ? 'https' : 'http').createServer(options, app);;
 const io = require("socket.io")(webServer);
 
 const rooms = {};
@@ -76,7 +76,9 @@ io.on("connection", socket => {
       const occupants = rooms[curRoom].occupants;
       socket.to(curRoom).broadcast.emit("occupantsChanged", { occupants });
 
-      if (occupants == {}) {
+
+
+      if (Object.keys(occupants).length === 0 && occupants.constructor === Object) {
         console.log("everybody left room");
         delete rooms[curRoom];
       }
