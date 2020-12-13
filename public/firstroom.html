@@ -212,7 +212,7 @@
             <a-text class="add__button" position="-0.42052 1.18114 -0.12028" value="Add box" text=""></a-text>
         </a-entity>
 
-        <a-box static-body physics-collider="group: hoop; collidesWith: basket;" hooping position="11.77459 1.59767 -2.43225" scale="" material=""
+        <a-box static-body physics-collider collision-filter="group: hoop; collidesWith: basket;" hooping position="11.77459 1.59767 -2.43225" scale="" material=""
         geometry="depth: 0.5; height: 0.15; width: 0.5"></a-box>
 
         <a-torus position="11.76523 1.65725 -2.44058" scale="" rotation="90 0 0" material="color: #c87d28"
@@ -801,9 +801,10 @@
         </a-entity>
 
         <a-sphere class="ball1" src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.05; "
-            position="13 0.22 -0.5" radius="0.14" mass="0.3" physics-collider="group: basket; collidesWith: hoop; ignoreSleep: false;" ></a-sphere>
+            position="13 0.22 -0.5" radius="0.14" mass="0.3" physics-collider="ignoreSleep: false;" collision-filter="group: basket; collidesWith: hoop;">
+        </a-sphere>
         <a-sphere class="ball2" src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.05; "
-            position="13 1.25 -0.5" radius="0.14" mass="0.3" physics-collider="group: basket; collidesWith: hoop; ignoreSleep: false;"></a-sphere>
+            position="13 1.25 -0.5" radius="0.14" mass="0.3" physics-collider="ignoreSleep: false;"  collision-filter="group: basket; collidesWith: hoop;"></a-sphere>
 
 
         <a-entity class="allboxes">
