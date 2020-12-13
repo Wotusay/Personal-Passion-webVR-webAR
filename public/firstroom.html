@@ -177,6 +177,24 @@
                 geometry="radius: 0.5; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
         </a-entity>
 
+        <a-box visible="false" static-body position="-7.85142 3.08253 -0.16232" scale="1 6.722 7.51664"
+            geometry="width: 1.08"></a-box>
+        <a-box visible="false" static-body position="-15.96475 3.08253 -0.16232" scale="1 6.722 7.51664"
+            geometry="width: 1.08"></a-box>
+        <a-box visible="false" static-body position="-11.90935 3.083 -4.15899" scale="1 6.722 7.517"
+            geometry="width: 1.08" rotation="0 90 0"></a-box>
+        <a-box visible="false" static-body position="-11.90935 3.07185 4.11947" scale="1 6.722 7.517"
+            geometry="width: 1.08" rotation="0 90 0"></a-box>
+
+        <a-box visible="false" static-body position="7.85142 3.08253 -0.16232" scale="1 6.722 7.51664"
+            geometry="width: 1.08"></a-box>
+        <a-box visible="false" static-body position="15.96475 3.08253 -0.16232" scale="1 6.722 7.51664"
+            geometry="width: 1.08"></a-box>
+        <a-box visible="false" static-body position="11.90935 3.083 -4.15899" scale="1 6.722 7.517"
+            geometry="width: 1.08" rotation="0 90 0"></a-box>
+        <a-box visible="false" static-body position="11.90935 3.07185 4.11947" scale="1 6.722 7.517"
+            geometry="width: 1.08" rotation="0 90 0"></a-box>
+
         <a-entity rotation="0 29.999999999999996 0" position="2.5299 0.00202 -11.38693" id="pool">
             <a-cylinder position="1.32951 -0.00413 0" scale="" material="color: #45a1e8"
                 geometry="height: 0.14; radius: 1.39; segmentsHeight: 5; segmentsRadial: 10"></a-cylinder>
@@ -193,6 +211,9 @@
                 geometry=""></a-box>
             <a-text class="add__button" position="-0.42052 1.18114 -0.12028" value="Add box" text=""></a-text>
         </a-entity>
+
+        <a-box static-body physics-collider="group: hoop; collidesWith: basket;" hooping position="11.77459 1.59767 -2.43225" scale="" material=""
+        geometry="depth: 0.5; height: 0.15; width: 0.5"></a-box>
 
         <a-torus position="11.76523 1.65725 -2.44058" scale="" rotation="90 0 0" material="color: #c87d28"
             geometry="radius: 0.29; radiusTubular: 0.02"></a-torus>
@@ -212,8 +233,8 @@
                 geometry="primitive: plane; width: 4.3; height: 1.7" material="side: double; color: #161419">
             </a-entity>
 
-            <a-text class="progress__boxes" color="#e59f3e" position="0.883 1 -5.90198" scale="0.75 0.75 0.75" value="Boxes placed: 0/8"
-                text=""></a-text>
+            <a-text class="progress__boxes" color="#e59f3e" position="0.883 1 -5.90198" scale="0.75 0.75 0.75"
+                value="Boxes placed: 0/8" text=""></a-text>
             <a-text class="progress__basket" color="#ff8800" position="-1.69763 1.00001 -5.93085" scale="0.75 0.75 0.75"
                 value="Hoops made: 0/5" text=""></a-text>
             <a-text class="progress__sticks" color="#8b5018" position="-0.34858 2.25652 -5.887" scale="0.75 0.75 0.75"
@@ -780,9 +801,9 @@
         </a-entity>
 
         <a-sphere class="ball1" src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.05; "
-            position="13 0.22 -0.5" radius="0.14" mass="0.3"></a-sphere>
+            position="13 0.22 -0.5" radius="0.14" mass="0.3" physics-collider="group: basket; collidesWith: hoop; ignoreSleep: false;" ></a-sphere>
         <a-sphere class="ball2" src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.05; "
-            position="13 1.25 -0.5" radius="0.14" mass="0.3"></a-sphere>
+            position="13 1.25 -0.5" radius="0.14" mass="0.3" physics-collider="group: basket; collidesWith: hoop; ignoreSleep: false;"></a-sphere>
 
 
         <a-entity class="allboxes">

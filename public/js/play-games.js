@@ -1,17 +1,25 @@
 AFRAME.registerComponent('hooping', {
         init: function() {
+
+            // needs to be tested
             let counter = 0;
             const activityBoardBasket = document.querySelector('.progress__basket');
 
+            console.log(this.el);
             this.el.addEventListener('collisions', (e) => {
+                console.log(e);
+                console.log('hoop detectd');
+
                 if (counter === 5) {
                     activityBoardBasket.setAttribute('value', `#10b240`);
                     activityBoardBasket.setAttribute('color', `Hoops made: ${counter}/5`)
                     return;
+                } else {
+                    console.log(e);
+                    counter++;
+                    activityBoardBasket.setAttribute('value', `Hoops made: ${counter}/5`);
                 }
-                console.log(e);
-                counter++;
-                activityBoardBasket.setAttribute('value', `Hoops made: ${counter}/5`);
+
             });
         
     }
@@ -39,18 +47,19 @@ AFRAME.registerComponent('add-boxes', {
         const addText = document.querySelector('.add__button');
         const activityBoardBoxes = document.querySelector('.progress__boxes');
 
+        // spawns even when collide with other objects
         this.el.addEventListener('collisions', (e) => {
-            if (counter === 8 ){
+            if (counter === 6 ){
                 addText.setAttribute('value', 'Max boxes reached');
                 activityBoardBoxes.setAttribute('color', `#10b240`);
-                activityBoardBoxes.setAttribute('value', `Boxes placed: ${counter}/8`);
+                activityBoardBoxes.setAttribute('value', `Boxes placed: ${counter}/6`);
                 return; 
             } else {
                 console.log(e);
                 counter++;
                 spawnBox();
                 console.log(counter);
-                activityBoardBoxes.setAttribute('value', `Boxes placed: ${counter}/8`);
+                activityBoardBoxes.setAttribute('value', `Boxes placed: ${counter}/6`);
             }
         });
     }
