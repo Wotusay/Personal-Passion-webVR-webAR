@@ -7,8 +7,6 @@ AFRAME.registerComponent('hooping', {
 
             console.log(this.el);
             this.el.addEventListener('collisions', (e) => {
-
-
                 if (counter === 5) {
                     activityBoardBasket.setAttribute('color', `#10b240`);
                     activityBoardBasket.setAttribute('value', `Hoops made: ${counter}/5`)
@@ -70,11 +68,12 @@ AFRAME.registerComponent('find-sticks', {
         this.el.addEventListener('collisions', (e) => {
             if (counter === 5 ) {
                 activityBoardSticks.setAttribute('color', `#10b240`);
-                activityBoardSticks.setAttribute('value', `Boxes placed: ${counter}/5`);
+                activityBoardSticks.setAttribute('value', `Sticks found: ${counter}/5`);
             } else {
                 console.log(e);
-                this.el.removeAttribute('')
                 counter++;
+                activityBoardSticks.setAttribute('value', `Sticks found: ${counter}/5` )
+                this.el.removeAttribute('physics-collider');
             }
         });
     }

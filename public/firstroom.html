@@ -39,6 +39,7 @@
             <img id="ball" src="./textures/ball/balldimpled.png" />
             <img id="hoop" src="./textures/ball/test.jpg" />
             <img id="box" src="./textures/ball/box.jpg" />
+            <img id="wood" src="./textures/tiles/wood.jpg" />
             <a-asset id="hand1" src="./textures/hands/rightHandHigh.glb" />
             <a-asset id="hand2" src="./textures/hands/leftHandHigh.glb" />
 
@@ -141,6 +142,21 @@
             </a-entity>
         </a-entity>
 
+        <a-box src="#wood" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
+            position="5.96617 0.06638 12.40352" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
+
+        <a-box src="#wood" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
+            position="-5.96617 0.06638 12.40352" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
+
+        <a-box src="#wood" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
+            position="-5.96617 0.06638 -12.40352" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
+
+        <a-box src="#wood" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
+            position="5.96617 0.06638 -12.40352" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
+
+        <a-box src="#wood" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
+            position="-14.93734 0.0555 7.40875" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"
+            rotation="0 0 0"></a-box>
 
         <a-entity id="duck" scale="0.1 0.1 0.1" position="4.08256 0.02532 -11.68012" rotation="0 0 0"
             animation="property: rotation; to: 0 360 0; dur:4000; easing: linear; loop:true;">
@@ -789,7 +805,7 @@
         </a-entity>
         <a-entity position="-0.34264 0 0" rotation="0 0 0">
             <a-entity static-body position="0.32463 1.627 -5.96291" scale="1 1 0.04377"
-                text="value: Hi welcome to your Room! \nGo and explore the public room!\n Use the joysticks or 'WASD/ZQSD' to move. \n See nobody? Refresh!  \n Enjoy it!; align: center; width: 3.7; lineHeight: 80; side: front; zOffset:0.1"
+                text="value: Hi welcome to your Room! \nGo and explore the public room!\n Use the joysticks or 'WASD/ZQSD' to move. \n See nobody? Refresh!  \n Enjoy it!; align: left; width: 3.7; lineHeight: 80; side: front; zOffset:0.1"
                 geometry="primitive: plane; width: 4.3; height: 1.7" material="side: double; color: #161419">
             </a-entity>
             <a-box static-body color="#4f4f4f" position="-1.86008 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
