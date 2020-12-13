@@ -73,7 +73,7 @@ AFRAME.registerComponent('find-sticks', {
                 activityBoardSticks.setAttribute('value', `Boxes placed: ${counter}/5`);
             } else {
                 console.log(e);
-                this.el
+                this.el.removeAttribute('')
                 counter++;
             }
         });
