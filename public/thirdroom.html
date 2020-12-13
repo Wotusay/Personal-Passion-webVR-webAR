@@ -5,28 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebVR - Wout Salembier</title>
-    <link rel="icon" type="image/png" href="textures/logo/favicon.png"/>
-    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+    <link rel="icon" type="image/png" href="textures/logo/favicon.png" />
+
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     <script
         src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
+    <script src="/build.js"></script>
     <script src="https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.min.js"></script>
     <script
         src="https://unpkg.com/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
 
-    <script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js"></script>
+    <script>window.NAF || document.write('<script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js">\x3C/script>')</script>
     <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.min.js"></script>
     <script src="./js/spawn-in-circle.js"></script>
     <script src="./js/random-model.js"></script>
+    <script src="./js/play-games.js"></script>
 </head>
 
 <body>
-    <a-scene light="defaultLightsEnabled: false" networked-scene="
+    <a-scene class="scene" light="defaultLightsEnabled: false" networked-scene="
     app: myApp;
-    room: thirdroom;
-    debug:false;
+    room: thirdpark;
+    debug:true;
     adapter: webrtc;
     audio: true;
     " physics fog="color:  #e0e1db;  far:  40;  near:  0;  density:  0">
@@ -36,12 +39,12 @@
             <img id="ball" src="./textures/ball/balldimpled.png" />
             <img id="hoop" src="./textures/ball/test.jpg" />
             <img id="box" src="./textures/ball/box.jpg" />
+            <img id="wood" src="./textures/tiles/wood.jpg" />
             <a-asset id="hand1" src="./textures/hands/rightHandHigh.glb" />
             <a-asset id="hand2" src="./textures/hands/leftHandHigh.glb" />
 
             <a-asset id="tree" src="textures/tree/scene.gltf" />
             <a-asset id="nav-mesh" src="textures/navmesh/navmesh.gltf" />
-
 
             <a-asset id="player-head" src="./textures/head/head.gltf" />
             <a-asset id="player-body" src="./textures/body/body.gltf" />
@@ -60,7 +63,6 @@
 
             <a-asset id="player-head-o" src="./textures/head/head-o.gltf" />
             <a-asset id="player-body-o" src="./textures/body/body-o.gltf" />
-
 
             <template id="avatar-template">
                 <a-entity position="0 1.6 0" scale="0.5 0.5 0.5" class="avatar" networked-audio-source>
@@ -133,13 +135,36 @@
 
             <a-entity id="player" camera position="0 1.6 0" look-controls
                 networked="template:#avatar-template; attachTemplateToLocal:false;">
+                
             </a-entity>
 
             <a-entity static-body position="0 0.17 0" rotation="0 0 0"
                 networked="template:#body; attachTemplateToLocal:false;" visible="true">
             </a-entity>
+
+
+
         </a-entity>
 
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks
+            physics-collider="ignoreSleep: false;" position="5.96617 0.06638 12.40352" grabbable
+            geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
+
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks
+            physics-collider="ignoreSleep: false;" position="-5.96617 0.06638 12.40352" grabbable
+            geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
+
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks
+            physics-collider="ignoreSleep: false;" position="-5.96617 0.06638 -12.40352" grabbable
+            geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
+
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks
+            physics-collider="ignoreSleep: false;" position="5.96617 0.06638 -12.40352" grabbable
+            geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
+
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks
+            physics-collider="ignoreSleep: false;" position="-14.93734 0.0555 7.40875" grabbable
+            geometry="depth: 0.12; height: 0.11; width: 0.55" rotation="0 0 0"></a-box>
 
         <a-entity id="duck" scale="0.1 0.1 0.1" position="4.08256 0.02532 -11.68012" rotation="0 0 0"
             animation="property: rotation; to: 0 360 0; dur:4000; easing: linear; loop:true;">
@@ -177,6 +202,24 @@
                 geometry="radius: 0.5; segmentsHeight: 10; segmentsWidth: 10"> </a-sphere>
         </a-entity>
 
+        <a-box visible="false" static-body position="-7.85142 3.08253 -0.16232" scale="1 6.722 7.51664"
+            geometry="width: 1.08"></a-box>
+        <a-box visible="false" static-body position="-15.96475 3.08253 -0.16232" scale="1 6.722 7.51664"
+            geometry="width: 1.08"></a-box>
+        <a-box visible="false" static-body position="-11.90935 3.083 -4.15899" scale="1 6.722 7.517"
+            geometry="width: 1.08" rotation="0 90 0"></a-box>
+        <a-box visible="false" static-body position="-11.90935 3.07185 4.11947" scale="1 6.722 7.517"
+            geometry="width: 1.08" rotation="0 90 0"></a-box>
+
+        <a-box visible="false" static-body position="7.85142 3.08253 -0.16232" scale="1 6.722 7.51664"
+            geometry="width: 1.08"></a-box>
+        <a-box visible="false" static-body position="15.96475 3.08253 -0.16232" scale="1 6.722 7.51664"
+            geometry="width: 1.08"></a-box>
+        <a-box visible="false" static-body position="11.90935 3.083 -4.15899" scale="1 6.722 7.517"
+            geometry="width: 1.08" rotation="0 90 0"></a-box>
+        <a-box visible="false" static-body position="11.90935 3.07185 4.11947" scale="1 6.722 7.517"
+            geometry="width: 1.08" rotation="0 90 0"></a-box>
+
         <a-entity rotation="0 29.999999999999996 0" position="2.5299 0.00202 -11.38693" id="pool">
             <a-cylinder position="1.32951 -0.00413 0" scale="" material="color: #45a1e8"
                 geometry="height: 0.14; radius: 1.39; segmentsHeight: 5; segmentsRadial: 10"></a-cylinder>
@@ -187,12 +230,15 @@
         </a-entity>
 
         <a-entity id="boxes" class="addboxes" position="-8.6237 0 0.07476" scale="" rotation="0 90 0">
-            <a-cylinder physics-collider static-body position="-0.0012 0.99543 0.00051" scale=""
+            <a-cylinder add-boxes physics-collider static-body position="-0.0012 0.99543 0.00051" scale=""
                 material="color: #2a27ec" geometry="height: 0.06; radius: 0.1; segmentsHeight: 16"></a-cylinder>
-            <a-box physics-collider static-body position="0 0.47642 0" scale="0.30548 1.02773 0.3009"
-                material="color: #404040" geometry=""></a-box>
-            <a-text position="-0.30787 1.18114 -0.12028" value="Add box" text=""></a-text>
+            <a-box static-body position="0 0.47642 0" scale="0.30548 1.02773 0.3009" material="color: #404040"
+                geometry=""></a-box>
+            <a-text class="add__button" position="-0.42052 1.18114 -0.12028" value="Add box" text=""></a-text>
         </a-entity>
+
+        <a-box static-body physics-collider hooping visible='false' position="11.77459 1.59767 -2.43225" scale=""
+            material="" geometry="depth: 0.5; height: 0.15; width: 0.5"></a-box>
 
         <a-torus position="11.76523 1.65725 -2.44058" scale="" rotation="90 0 0" material="color: #c87d28"
             geometry="radius: 0.29; radiusTubular: 0.02"></a-torus>
@@ -208,9 +254,17 @@
 
         <a-entity position="0.19192 0 0" rotation="0 180 0">
             <a-entity static-body position="0.32463 1.627 -5.96291" scale="1 1 0.04377"
-                text="value: UI - Board; align: center; width: 4.48; lineHeight: 80; side: front;zOffset:0.1"
+                text="value: Activity board (VR - only); align: center; width: 4.48; lineHeight: 80; side: front;zOffset:0.1"
                 geometry="primitive: plane; width: 4.3; height: 1.7" material="side: double; color: #161419">
             </a-entity>
+
+            <a-text class="progress__boxes" color="#e59f3e" position="0.883 1 -5.90198" scale="0.75 0.75 0.75"
+                value="Boxes placed: 0/8" text=""></a-text>
+            <a-text class="progress__basket" color="#ff8800" position="-1.69763 1.00001 -5.93085" scale="0.75 0.75 0.75"
+                value="Hoops made: 0/5" text=""></a-text>
+            <a-text class="progress__sticks" color="#8b5018" position="-0.34858 2.25652 -5.887" scale="0.75 0.75 0.75"
+                value="Sticks found: 0/5" text=""></a-text>
+
             <a-box static-body color="#4f4f4f" position="-1.86008 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
                 material="" geometry=""></a-box>
             <a-box static-body color="#4f4f4f" position="2.45363 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
@@ -759,7 +813,7 @@
         </a-entity>
         <a-entity position="-0.34264 0 0" rotation="0 0 0">
             <a-entity static-body position="0.32463 1.627 -5.96291" scale="1 1 0.04377"
-                text="value: Hi welcome to your Room! \nGo and explore your created room!\n Enjoy it!; align: center; width: 4.48; lineHeight: 80; side: front; zOffset:0.1"
+                text="value: Hi welcome to your Room! \nGo and explore the public room!\n Use the joysticks or 'WASD/ZQSD' to move. \n See nobody? Refresh!  \n Enjoy it!; align: left; width: 3.7; lineHeight: 80; side: front; zOffset:0.1"
                 geometry="primitive: plane; width: 4.3; height: 1.7" material="side: double; color: #161419">
             </a-entity>
             <a-box static-body color="#4f4f4f" position="-1.86008 1.21025 -5.95909" scale="0.16911 2.54358 0.15376"
@@ -771,16 +825,20 @@
             </a-plane>
         </a-entity>
 
-        <a-sphere class="ball1" src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.05; "
-            position="13 0.22 -0.5" radius="0.14" mass="0.3"></a-sphere>
-        <a-sphere class="ball2" src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.05; "
-            position="13 1.25 -0.5" radius="0.14" mass="0.3"></a-sphere>
+        <a-sphere id="ball1" src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.05; "
+            position="13 0.22 -0.5" radius="0.14" mass="0.3" physics-collider="ignoreSleep: false;">
+        </a-sphere>
+        <a-sphere id="ball2" src="#ball" class="throwable" grabbable dynamic-body="angularDamping: 0.05; "
+            position="13 1.25 -0.5" radius="0.14" mass="0.3" physics-collider="ignoreSleep: false;"></a-sphere>
+
 
         <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
             position="-11.5 2.25 0" radius="0.50"></a-box>
         <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
             position="-11.5 0.25 0" radius="0.50"></a-box>
+        <a-entity class="allboxes">
 
+        </a-entity>
         <a-circle material="color: #1e1820; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
             geometry="radius: 5; thetaLength: 460; segments: 360;" position="0 0.01641 0"></a-circle>
         <a-circle material="color: #0c732b; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
@@ -1538,7 +1596,7 @@
             ]
         });
 
-        const onConnect = () => {
+        function onConnect() {
             console.log("onConnect", new Date());
         }
     </script>

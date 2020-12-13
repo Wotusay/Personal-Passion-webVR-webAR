@@ -26,7 +26,7 @@
 </head>
 
 <body>
-    <a-scene  class="scene" light="defaultLightsEnabled: false" networked-scene="
+    <a-scene class="scene" light="defaultLightsEnabled: false" networked-scene="
     app: myApp;
     room: firstpark;
     debug:true;
@@ -135,28 +135,36 @@
 
             <a-entity id="player" camera position="0 1.6 0" look-controls
                 networked="template:#avatar-template; attachTemplateToLocal:false;">
+                
             </a-entity>
 
             <a-entity static-body position="0 0.17 0" rotation="0 0 0"
                 networked="template:#body; attachTemplateToLocal:false;" visible="true">
             </a-entity>
+
+
+
         </a-entity>
 
-        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
-            position="5.96617 0.06638 12.40352" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks
+            physics-collider="ignoreSleep: false;" position="5.96617 0.06638 12.40352" grabbable
+            geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
 
-        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
-            position="-5.96617 0.06638 12.40352" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks
+            physics-collider="ignoreSleep: false;" position="-5.96617 0.06638 12.40352" grabbable
+            geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
 
-        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
-            position="-5.96617 0.06638 -12.40352" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks
+            physics-collider="ignoreSleep: false;" position="-5.96617 0.06638 -12.40352" grabbable
+            geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
 
-        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
-            position="5.96617 0.06638 -12.40352" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks
+            physics-collider="ignoreSleep: false;" position="5.96617 0.06638 -12.40352" grabbable
+            geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
 
-        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
-            position="-14.93734 0.0555 7.40875" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"
-            rotation="0 0 0"></a-box>
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks
+            physics-collider="ignoreSleep: false;" position="-14.93734 0.0555 7.40875" grabbable
+            geometry="depth: 0.12; height: 0.11; width: 0.55" rotation="0 0 0"></a-box>
 
         <a-entity id="duck" scale="0.1 0.1 0.1" position="4.08256 0.02532 -11.68012" rotation="0 0 0"
             animation="property: rotation; to: 0 360 0; dur:4000; easing: linear; loop:true;">
