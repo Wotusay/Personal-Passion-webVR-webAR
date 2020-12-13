@@ -2,7 +2,7 @@ AFRAME.registerComponent('hooping', {
         init: function() {
 
             // needs to be tested
-            let counter = 0;
+            let counter = -1;
             const activityBoardBasket = document.querySelector('.progress__basket');
 
             console.log(this.el);
@@ -11,8 +11,8 @@ AFRAME.registerComponent('hooping', {
                 console.log('hoop detectd');
 
                 if (counter === 5) {
-                    activityBoardBasket.setAttribute('value', `#10b240`);
-                    activityBoardBasket.setAttribute('color', `Hoops made: ${counter}/5`)
+                    activityBoardBasket.setAttribute('color', `#10b240`);
+                    activityBoardBasket.setAttribute('value', `Hoops made: ${counter}/5`)
                     return;
                 } else {
                     console.log(e);
