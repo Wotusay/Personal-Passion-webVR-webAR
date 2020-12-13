@@ -62,19 +62,35 @@ AFRAME.registerComponent('add-boxes', {
 
 AFRAME.registerComponent('find-sticks', {
     init: function() {
-        let counter = -1;
+        let counter = -5;
         const activityBoardSticks = document.querySelector('.progress__sticks');
+        const sticks = document.querySelectorAll('.stick');
+        sticks.forEach(stick => {
+            stick.addEventListener('collisions', (e) => {
+                console.log(counter)
+                if (counter === 5 ) {
+                    activityBoardSticks.setAttribute('color', `#10b240`);
+                    activityBoardSticks.setAttribute('value', `Sticks found: ${counter}/5`);
+                }  
+                if (counter >= 0) {
+    
+                    if (!e.target.classList.contains('found')) {
+                        counter++;
+                        activityBoardSticks.setAttribute('value', `Sticks found: ${counter}/5` );
+                        e.target.classList.add('found');
+                    }  
+                    
+                    if (e.target.classList.contains('found')) {
+                        console.log(e.target.classList);
+                    }
+    
+                } else{
+                    counter++;
+                    return;
+                }
+            });
 
-        this.el.addEventListener('collisions', (e) => {
-            if (counter === 5 ) {
-                activityBoardSticks.setAttribute('color', `#10b240`);
-                activityBoardSticks.setAttribute('value', `Sticks found: ${counter}/5`);
-            } else {
-                console.log(e);
-                counter++;
-                activityBoardSticks.setAttribute('value', `Sticks found: ${counter}/5` )
-                this.el.removeAttribute('physics-collider');
-            }
         });
+
     }
 });

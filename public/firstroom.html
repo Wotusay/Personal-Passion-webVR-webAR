@@ -7,7 +7,7 @@
     <title>WebVR - Wout Salembier</title>
     <link rel="icon" type="image/png" href="textures/logo/favicon.png" />
 
-    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     <script
         src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
@@ -26,7 +26,7 @@
 </head>
 
 <body>
-    <a-scene light="defaultLightsEnabled: false" networked-scene="
+    <a-scene  class="scene" light="defaultLightsEnabled: false" networked-scene="
     app: myApp;
     room: firstpark;
     debug:true;
@@ -142,19 +142,19 @@
             </a-entity>
         </a-entity>
 
-        <a-box src="#wood" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
             position="5.96617 0.06638 12.40352" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
 
-        <a-box src="#wood" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
             position="-5.96617 0.06638 12.40352" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
 
-        <a-box src="#wood" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
             position="-5.96617 0.06638 -12.40352" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
 
-        <a-box src="#wood" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
             position="5.96617 0.06638 -12.40352" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"></a-box>
 
-        <a-box src="#wood" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
+        <a-box src="#wood" class="stick" dynamic-body material="color: #ada8a8" find-sticks physics-collider="ignoreSleep: false;"
             position="-14.93734 0.0555 7.40875" grabbable geometry="depth: 0.12; height: 0.11; width: 0.55"
             rotation="0 0 0"></a-box>
 
@@ -824,11 +824,12 @@
             position="13 1.25 -0.5" radius="0.14" mass="0.3" physics-collider="ignoreSleep: false;"></a-sphere>
 
 
+        <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
+            position="-11.5 2.25 0" radius="0.50"></a-box>
+        <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
+            position="-11.5 0.25 0" radius="0.50"></a-box>
         <a-entity class="allboxes">
-            <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
-                position="-11.5 2.25 0" radius="0.50"></a-box>
-            <a-box src="#box" class="throwable" stretchable grabbable dynamic-body="angularDamping: 0.5; "
-                position="-11.5 0.25 0" radius="0.50"></a-box>
+
         </a-entity>
         <a-circle material="color: #1e1820; side: double; roughness: 0.59" open-ended="true" rotation="90 0 0"
             geometry="radius: 5; thetaLength: 460; segments: 360;" position="0 0.01641 0"></a-circle>
