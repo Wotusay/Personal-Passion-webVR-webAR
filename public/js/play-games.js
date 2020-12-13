@@ -7,15 +7,13 @@ AFRAME.registerComponent('hooping', {
 
             console.log(this.el);
             this.el.addEventListener('collisions', (e) => {
-                console.log(e);
-                console.log('hoop detectd');
+
 
                 if (counter === 5) {
                     activityBoardBasket.setAttribute('color', `#10b240`);
                     activityBoardBasket.setAttribute('value', `Hoops made: ${counter}/5`)
                     return;
                 } else {
-                    console.log(e);
                     counter++;
                     activityBoardBasket.setAttribute('value', `Hoops made: ${counter}/5`);
                 }
@@ -55,11 +53,28 @@ AFRAME.registerComponent('add-boxes', {
                 activityBoardBoxes.setAttribute('value', `Boxes placed: ${counter}/6`);
                 return; 
             } else {
-                console.log(e);
                 counter++;
                 spawnBox();
-                console.log(counter);
                 activityBoardBoxes.setAttribute('value', `Boxes placed: ${counter}/6`);
+            }
+        });
+    }
+});
+
+
+AFRAME.registerComponent('find-sticks', {
+    init: function() {
+        let counter = -1;
+        const activityBoardSticks = document.querySelector('.progress__sticks');
+
+        this.el.addEventListener('collisions', (e) => {
+            if (counter === 5 ) {
+                activityBoardSticks.setAttribute('color', `#10b240`);
+                activityBoardSticks.setAttribute('value', `Boxes placed: ${counter}/5`);
+            } else {
+                console.log(e);
+                this.el
+                counter++;
             }
         });
     }
