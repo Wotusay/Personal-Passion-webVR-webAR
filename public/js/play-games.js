@@ -22,7 +22,7 @@ AFRAME.registerComponent('hooping', {
 
 const spawnBox = () => {
     let box = document.createElement('a-box');
-    const boxPlace = document.querySelector('.allboxes')
+    const boxPlace = document.querySelector('.scene')
     box.setAttribute('src', '#box');
     box.setAttribute('stretchable', '');
     box.setAttribute('grabbable', '');
