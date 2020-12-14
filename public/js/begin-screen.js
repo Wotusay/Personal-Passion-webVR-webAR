@@ -147,7 +147,6 @@ AFRAME.registerComponent('numpad', {
                 });
 
                 submitButton.addEventListener('click', e => {
-                    console.log(window.location.pathname) 
 
                     const url = window.location.href + 'privateroom.html';
 

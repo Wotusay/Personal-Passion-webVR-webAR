@@ -13,7 +13,6 @@ const getUrlParams = () =>{
       match = search.exec(query);
     }
 
-    console.log(urlParams);
     return urlParams;
 };
 

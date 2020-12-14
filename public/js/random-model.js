@@ -3,7 +3,6 @@ AFRAME.registerComponent('random-model', {
         let randomNumberGen = Math.floor(Math.random() * 6);
         const randomHead = 'randomHead';
         const randomBody = 'randomBody';
-        console.log(this.el.className);
 
         if (randomNumberGen === 0 ) {
             if (this.el.className === randomHead){

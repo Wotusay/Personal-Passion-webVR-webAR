@@ -5,7 +5,6 @@ AFRAME.registerComponent('hooping', {
             let counter = -1;
             const activityBoardBasket = document.querySelector('.progress__basket');
 
-            console.log(this.el);
             this.el.addEventListener('collisions', (e) => {
                 if (counter === 5) {
                     activityBoardBasket.setAttribute('color', `#10b240`);
@@ -24,7 +23,6 @@ AFRAME.registerComponent('hooping', {
 const spawnBox = () => {
     let box = document.createElement('a-box');
     const boxPlace = document.querySelector('.allboxes')
-    console.log(box);
     box.setAttribute('src', '#box');
     box.setAttribute('stretchable', '');
     box.setAttribute('grabbable', '');
@@ -33,7 +31,6 @@ const spawnBox = () => {
     box.setAttribute('radius', '0.5');
     box.classList.add('throwable');
 
-    console.log(box);
     boxPlace.appendChild(box);
 };
 
@@ -67,7 +64,6 @@ AFRAME.registerComponent('find-sticks', {
         const sticks = document.querySelectorAll('.stick');
         sticks.forEach(stick => {
             stick.addEventListener('collisions', (e) => {
-                console.log(counter)
                 if (counter === 5 ) {
                     activityBoardSticks.setAttribute('color', `#10b240`);
                     activityBoardSticks.setAttribute('value', `Sticks found: ${counter}/5`);
@@ -81,7 +77,7 @@ AFRAME.registerComponent('find-sticks', {
                     }  
                     
                     if (e.target.classList.contains('found')) {
-                        console.log(e.target.classList);
+                        return;
                     }
     
                 } else{
